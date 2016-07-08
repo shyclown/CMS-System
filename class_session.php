@@ -1,4 +1,8 @@
 <?php
+
+/** 
+* required connection to database
+*/
 require_once('class_mysqli.php');
 /**
  * http://culttt.com/2013/02/04/how-to-save-php-sessions-to-a-database/
