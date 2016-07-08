@@ -11,8 +11,6 @@ class Session
 {
   private $db;
 
-
-
   public function __construct()
   {
     // Instantiate new Database object
@@ -28,15 +26,11 @@ class Session
       array($this, "_destroy"),
       array($this, "_gc")
     );
-    // Start the session
     session_start();
   } // end of __construct
 
-  /**
-  * Create table if not exist
-  */
+  
   private function create_table_if_not_exist(){
-
     $sql_create = 'CREATE TABLE `el_sessions` (
                   `id` varchar(32) COLLATE utf8_bin NOT NULL,
                   `access` int(10) unsigned DEFAULT NULL,
@@ -44,11 +38,12 @@ class Session
                   PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin';
     $sql_check = 'SHOW TABLES LIKE `el_sessions`';
-    if ($this->db->query($sql_check)->num_rows==0){
+    
+    if ($this->db->query($sql_check)->num_rows==0)
+    {
       $this->db->query($sql_create);
     }
   }
-
 
   /**
   * Open
