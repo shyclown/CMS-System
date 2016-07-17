@@ -1,0 +1,46 @@
+<style>
+form,h1,h2{
+  font-family: sans-serif;
+}
+form.regular{
+  display: block;
+  padding: 16px;
+  border: 1px solid #09f;
+  width: 300px;
+}
+form.regular > div.submit_cont{
+  display: block;
+  text-align: right;
+  padding: 8px 8px;
+}
+form.regular > p > label{
+  display: none;
+}
+form.regular > p > input{
+  display: block;
+  margin: 4px 0px 8px 0px;
+  padding: 8px 4px;
+  clear: both;
+  width: 100%;
+}
+button.submit_btn::after{
+  display: block;
+  content: 'new';
+  clear: both;
+}
+</style>
+
+<h2>Sign In</h2>
+<form class="regular" name="this is form name" autocomplete="off">
+  <p>
+  <label for="user_email">email:</label>
+  <input name="user_email" type="text" placeholder="email" autocomplete="false" value="" />
+  </p>
+  <p>
+  <label for="user_pass">password:</label>
+  <input name="user_pass" type="password" placeholder="password" autocomplete="false" value="" />
+  </p>
+  <div class="submit_cont">
+    <input type="submit" value="Sign In"/>
+  </div>
+</form>

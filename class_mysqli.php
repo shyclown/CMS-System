@@ -4,6 +4,7 @@ require_once('define.php');
 mysqli_report(MYSQLI_REPORT_ALL);
 class Database{
 
+  // from define.php file
   private $hostname = DB_HOST;
   private $username = DB_USER;
   private $password = DB_PASS;
