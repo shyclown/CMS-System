@@ -1,6 +1,6 @@
 <?php
 
-/** 
+/**
 * required connection to database
 */
 require_once('class_mysqli.php');
@@ -29,20 +29,21 @@ class Session
     session_start();
   } // end of __construct
 
-  
+
   private function create_table_if_not_exist(){
-    $sql_create = 'CREATE TABLE `el_sessions` (
+    $sql_create = 'CREATE TABLE IF NOT EXISTS `el_sessions` (
                   `id` varchar(32) COLLATE utf8_bin NOT NULL,
                   `access` int(10) unsigned DEFAULT NULL,
                   `data` text COLLATE utf8_bin,
                   PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin';
-    $sql_check = 'SHOW TABLES LIKE `el_sessions`';
-    
-    if ($this->db->query($sql_check)->num_rows==0)
-    {
+  //  $sql_check = 'SHOW TABLES LIKE `el_sessions`';
+
+  //  var_dump($this->db->query($sql_check));
+  //  if ($this->db->query($sql_check)->num_rows==0)
+  //  {
       $this->db->query($sql_create);
-    }
+  //  }
   }
 
   /**
