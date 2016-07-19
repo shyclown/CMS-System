@@ -17,14 +17,17 @@ class Account
   }
 
   private function create_table_if_not_exist(){
-    $sql_create = 'CREATE TABLE IF NOT EXISTS `el_users` (
-                  `id` varchar(32) COLLATE utf8_bin NOT NULL,
-                  `email` varchar(32) COLLATE utf8_bin NOT NULL,
-                  `password` varchar(32) COLLATE utf8_bin NOT NULL,
-                  `access` int(10) unsigned DEFAULT NULL,
-                  `data` text COLLATE utf8_bin,
-                  PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin';
+
+    $sql_create =    'CREATE TABLE IF NOT EXISTS `el_users` (
+                      `id` bigint(32) NOT NULL AUTO_INCREMENT,
+                      `user_login` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
+                      `user_pass` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+                      `user_nicename` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+                      `user_email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+                      `salt` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+                      PRIMARY KEY (`id`),
+                      UNIQUE KEY `id` (`id`)
+                      ) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
     //$sql_check = 'SHOW TABLES LIKE `el_users`';
     $this->db->query($sql_create);
   }

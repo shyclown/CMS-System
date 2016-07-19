@@ -63,7 +63,7 @@ form.regular > p > input[type="checkbox"]{
   </div>
   <div class="card_content">
 
-  <form class="regular" name="Log_In" method="post" action="http://localhost/CMS-System/test.php" autocomplete="off">
+  <form class="regular" name="Log_In" method="post" action="/test.php" autocomplete="off">
     <p>
     <label for="user_email">Email:</label>
     <input name="user_email" type="text" placeholder="email" autocomplete="false" value="" />
