@@ -1,0 +1,85 @@
+html,body{
+  margin: 0px 0px;
+  padding: 0px 0px;
+  position: relative;
+}
+#page-content{
+  margin-left: 200px;
+}
+nav{
+  background-color: #EAEAEA;
+  height: 32px;
+}
+nav ul,li{
+  padding: 0px 0px;
+  margin: 0px 0px;
+}
+nav li{
+  display: inline-block;
+  line-height: 16px;
+}
+nav a{
+  display: block;
+  padding: 8px 8px;
+  text-decoration: none;
+}
+header h1{
+  margin: 0px 0px;
+}
+
+form,h1,h2{
+  font-family: sans-serif;
+  font-weight: 100;
+}
+
+div.card{
+  display: block;
+  margin: 4px;
+  border: 1px solid #999;
+  width: 300px;
+}
+div.card_top{
+  padding: 8px;
+}
+div.card_content{
+  padding: 0px 16px;
+}
+div.card_footer_btn{
+  padding: 8px;
+  text-align: right;
+}
+
+h2.form{
+  font-size: 24px;
+  font-weight: 100;
+  margin: 0px 0px;
+  padding: 8px 8px;
+
+}
+form.regular{
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+input[type="submit"]{
+  padding: 8px 16px;
+  border: none;
+  background-color: #09F;
+}
+form.regular > p > label{
+  font-size: 12px;
+}
+form.regular > p > input[type="text"],
+form.regular > p > input[type="password"]{
+  box-sizing: border-box;
+  display: block;
+  margin: 4px 0px 8px 0px;
+  padding: 8px 4px;
+  clear: both;
+  width: 100%;
+}
+form.regular > p > input[type="checkbox"]{
+
+}
