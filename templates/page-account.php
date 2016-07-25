@@ -2,11 +2,13 @@
 
 <style>
 .page-wrap {
-  padding: 16px 0px;
+  padding: 0px 0px;
+  background-color: #EAEAEA;
 }
 .page-wrap header{
-  padding: 0px 16px;
+  padding: 16px 16px;
   margin: 0px;
+  background-color: #FFF;
   border-bottom: 1px solid #eaeaea;
 }
 .page-wrap header > h2{
@@ -22,26 +24,13 @@ font-family: 'Raleway', sans-serif;
 }
 
 
-form.el-regular{
-  padding: 16px;
-  background-color: #EAEAEA;
-  font-size: 16px;
-  line-height: 16px;
+.btn-sqr{
+  padding: 8px 16px;
+  margin: 16px;
+  border: none;
+  background-color: #666;
+  color: #FFF;
 }
-form.el-regular > input[type="text"]{
-  padding: 8px;
-  background-color: #FFF;
-  font-size: 16px;
-  line-height: 16px;
-}
-form.el-regular > label{
-  display: block;
-  padding: 8px 0px 4px 0px;
-  background-color: #EAEAEA;
-  font-size: 14px;
-  line-height: 16px;
-}
-
 </style>
 <div class="page-wrap">
   <header>
@@ -51,10 +40,17 @@ form.el-regular > label{
 <form class="el-regular" name="page-name-form">
 <label for="page-name">Page Name:</label>
 <input name="page-name" type="text" placeholder="Here write name of your page">
-
 <label for="page-keywords">Key Words:</label>
 <input name="page-keywords" type="text" placeholder="Here write key words you wish to be associated with your page-content">
-
-
 </form>
+<header>
+<h2>Custom Information</h2>
+<p>here you can add any category you wish</p>
+</header>
+<div>
+<button class="btn-sqr"><i class="fa fa-plus fa-fw"></i> Add Custom Details</button>
+
+</div>
+
+
 </div>
