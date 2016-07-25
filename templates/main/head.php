@@ -10,6 +10,8 @@
 <script src="/js/ng_controllers/myapp.js"></script>
 <!-- Google Font Raleway -->
 <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<link href="/style/font-awesome.min.css" rel="stylesheet">
+
 
 <style>
 html,body{font-family: 'Raleway', sans-serif;}

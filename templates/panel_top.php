@@ -43,15 +43,21 @@
 
 
 }
+.menuBtn{
+  height: 48px;
+  width: 48px;
+  background-color: #666;
+  border: none;
+}
 </style>
 
 
 <div id="panel-top">
   <header>
-    <button ng-click="leftPanelExpanded = !leftPanelExpanded">open menu</button>
+    <button class="menuBtn" ng-click="leftPanelExpanded = !leftPanelExpanded"><i class="fa fa-navicon fa-lg"></i></button>
   <h1>CMS</h1>
   <span>This is CMS Page</span>
   </header>
 
-  <div id="userTopBtn"><button>Login</button></div>
+  <div id="userTopBtn"><button><i class="fa fa-user"></i> Login</button></div>
 </div>

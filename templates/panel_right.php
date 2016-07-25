@@ -46,9 +46,12 @@
   top: 0px;
   right: 0px;
   font-size: 16px;
-  background-color: #999;
+  background-color: #666;
   padding: 8px 8px;
   margin: 0px 0px;
+}
+#log .fa-close{
+  color: #FFF;
 }
 </style>
 
@@ -58,7 +61,7 @@
       <header>
       <h2>Log:</h2>
       </header>
-      <div class="close" id="log-panel-close-btn">close</div>
+      <div class="close" id="log-panel-close-btn"><i class="fa fa-close"></i></div>
     <?php
       $logs = $log->read();
       $logs_size = count($logs);

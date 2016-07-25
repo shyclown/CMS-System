@@ -3,6 +3,9 @@ html,body{
   padding: 0px 0px;
   position: relative;
 }
+.fa-navicon{
+  color: white;
+}
 #page-content{
   margin-left: 200px;
 /*  margin-top: 84px; */
