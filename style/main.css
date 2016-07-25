@@ -41,6 +41,7 @@ div.card{
   margin: 4px;
   border: 1px solid #999;
   width: 300px;
+  float: left;
 }
 div.card_top{
   padding: 8px;
