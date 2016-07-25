@@ -22,7 +22,25 @@ font-family: 'Raleway', sans-serif;
 }
 
 
-
+form.el-regular{
+  padding: 16px;
+  background-color: #EAEAEA;
+  font-size: 16px;
+  line-height: 16px;
+}
+form.el-regular > input[type="text"]{
+  padding: 8px;
+  background-color: #FFF;
+  font-size: 16px;
+  line-height: 16px;
+}
+form.el-regular > label{
+  display: block;
+  padding: 8px 0px 4px 0px;
+  background-color: #EAEAEA;
+  font-size: 14px;
+  line-height: 16px;
+}
 
 </style>
 <div class="page-wrap">

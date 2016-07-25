@@ -22,26 +22,6 @@ font-family: 'Raleway', sans-serif;
 }
 
 
-form.el-regular{
-  padding: 16px;
-  background-color: #EAEAEA;
-  font-size: 16px;
-  line-height: 16px;
-}
-form.el-regular > input[type="text"]{
-  padding: 8px;
-  background-color: #FFF;
-  font-size: 16px;
-  line-height: 16px;
-}
-form.el-regular > label{
-  display: block;
-  padding: 8px 0px 4px 0px;
-  background-color: #EAEAEA;
-  font-size: 14px;
-  line-height: 16px;
-}
-
 </style>
 <div class="page-wrap">
   <header>
@@ -57,21 +37,4 @@ form.el-regular > label{
 
 
 </form>
-</div>
-
-
-<!-- Motto -->
-<div class="card">
-  <header>
-    <h3>Page Settings</h3>
-    <p>here you cna change motto of the page shown on top of the page</p>
-  </header>
-  <div class="content">
-    <form name="mottoForm">
-      <label for="page-motto">Motto:</label>
-      <input name="page-motto" placeholder="Motto"/>
-      <label for="page-motto-author">Author of Motto:</label>
-      <input name="page-motto-author" placeholder="Author Name"/>
-    </form>
-  </div>
 </div>

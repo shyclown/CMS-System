@@ -9,6 +9,9 @@ include "/templates/panel_left.php";
 include "/templates/panel_right.php";
 ?>
 <div id="page-content">
+
+
+
 <?php
 if(isset($_GET['page'])){
   $page = $_GET['page'];

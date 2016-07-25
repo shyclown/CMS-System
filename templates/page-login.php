@@ -7,7 +7,7 @@
   </div>
   <div class="card_content">
 
-  <form class="regular" name="Log_In" method="post" action="/test.php" autocomplete="off">
+  <form class="el-regular" name="Log_In" method="post" action="/test.php" autocomplete="off">
     <p>
     <label for="user_email">Email:</label>
     <input name="user_email" type="text" placeholder="email" autocomplete="false" value="" />
@@ -48,6 +48,7 @@
     </p>
   </div>
   <div class="card_footer_btn">
+    <i class="fa fa-user-plus fa-fw"></i>
       <input type="submit" value="Sign In"/>
     </div>
   </form>
