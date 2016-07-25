@@ -45,11 +45,11 @@ form.el-regular > label{
 </style>
 <div class="page-wrap">
   <header>
-<h2>Page Settings</h2>
+<h2>My Folders</h2>
 <p>here you can setup all page settings</p>
   </header>
 <form class="el-regular" name="page-name-form">
-<label for="page-name">Page Name:</label>
+<label for="page-name">New Folder Name:</label>
 <input name="page-name" type="text" placeholder="Here write name of your page">
 
 <label for="page-keywords">Key Words:</label>
@@ -57,21 +57,4 @@ form.el-regular > label{
 
 
 </form>
-</div>
-
-
-<!-- Motto -->
-<div class="card">
-  <header>
-    <h3>Page Settings</h3>
-    <p>here you cna change motto of the page shown on top of the page</p>
-  </header>
-  <div class="content">
-    <form name="mottoForm">
-      <label for="page-motto">Motto:</label>
-      <input name="page-motto" placeholder="Motto"/>
-      <label for="page-motto-author">Author of Motto:</label>
-      <input name="page-motto-author" placeholder="Author Name"/>
-    </form>
-  </div>
 </div>

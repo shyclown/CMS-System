@@ -33,18 +33,13 @@
 <div id="left-panel" ng-show="leftPanelExpanded">
   <div id="left-panel-content">
     <ul>
-      <li><a href="/"><i class="fa fa-cog fa-fw"></i>  Settings</a></li>
+      <li><a href="?page=settings"><i class="fa fa-cog fa-fw"></i>  Settings</a></li>
       <li><a id="log-panel-btn" href="#"><i class="fa fa-database fa-fw"></i>  Log Panel</a></li>
-      <li><a href="/"><i class="fa fa-archive fa-fw"></i>   Archive</a></li>
-      <li><a href="/"><i class="fa fa-folder fa-fw"></i>  Folders</a></li>
-      <li><a href="/">Link</a></li>
-      <li><a href="/">Link</a></li>
-      <li><a href="/">Link</a></li>
-      <li><a href="/">Link</a></li>
-      <li><a href="/">Link</a></li>
-      <li><a href="/">Link</a></li>
-      <li><a href="/">Link</a></li>
-      <li><a href="/">Link</a></li>
+      <li><a href="#"><i class="fa fa-archive fa-fw"></i>   Archive</a></li>
+      <li><a href="?page=folders"><i class="fa fa-folder fa-fw"></i>  Folders</a></li>
+      <li><a href="?page=login"><i class="fa fa-unlock fa-fw"></i> Login</a></li>
+      <li><a href="?page=account"><i class="fa fa-user fa-fw"></i> My Account</a></li>
+
 
     </ul>
   </div>
