@@ -30,6 +30,7 @@
   <div id="left-panel-content">
     <ul>
       <li><a href="/">Link</a></li>
+            <li><a id="log-panel-btn" href="#">Log Panel</a></li>
       <li><a href="/">Link</a></li>
       <li><a href="/">Link</a></li>
       <li><a href="/">Link</a></li>
@@ -40,7 +41,7 @@
       <li><a href="/">Link</a></li>
       <li><a href="/">Link</a></li>
       <li><a href="/">Link</a></li>
-      <li><a href="/">Link</a></li>
+
     </ul>
   </div>
 </div>
