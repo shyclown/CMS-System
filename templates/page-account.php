@@ -23,8 +23,6 @@ font-size: 14px;
 font-family: 'Raleway', sans-serif;
 }
 
-
-
 </style>
 <div class="page-wrap">
   <header>

@@ -59,5 +59,5 @@
   <span>This is CMS Page</span>
   </header>
 
-  <div id="userTopBtn"><button><i class="fa fa-user"></i> Login</button></div>
+  <div id="userTopBtn"><button ng-click="userPanelExpanded = !userPanelExpanded"><i class="fa fa-user"></i> Login</button></div>
 </div>

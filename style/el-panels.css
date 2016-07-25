@@ -1,0 +1,21 @@
+.el-panel-user{
+  position: fixed;
+  z-index: 9999;
+  background-color: #FFF;
+  border: 1px solid #666;
+  padding: 16px 0px;
+  border-top: none;
+  top: 48px;
+  right: 0px;
+  width: 300px;
+}
+.el-panel-user > div.content{
+  padding: 0px 16px;
+}
+.el-panel-btn{
+  padding: 8px 16px;
+  margin: 8px 0px 0px 0px;
+  border: none;
+  background-color: #666;
+  color: #FFF;
+}

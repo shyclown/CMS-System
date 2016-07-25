@@ -2,11 +2,13 @@
 
 <?php
 include "/templates/panel_top.php";
+include "/templates/panel_user.php";
 include "/templates/nav_top.php";
 ?>
 <?php
 include "/templates/panel_left.php";
 include "/templates/panel_right.php";
+
 ?>
 <div id="page-content">
 
