@@ -7,6 +7,7 @@
 
 <!-- Angular JS -->
 <script src="/js/angular/angular.min.js"></script>
+<script src="/js/ng_controllers/myapp.js"></script>
 <!-- Google Font Raleway -->
 <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 

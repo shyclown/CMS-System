@@ -7,6 +7,7 @@
   z-index: 9999;
   width: 100%;
   height: 48px;
+  overflow: hidden;
   background-color: #FFF;
   border-bottom: 1px solid #999;
 }
@@ -25,12 +26,32 @@
 #panel-top a:hover{
   background-color: #07F;
 }
+
+#userTopBtn{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+#userTopBtn > button{
+  box-sizing: border-box;
+  border: none;
+  height: 48px;
+  width: 100px;
+  background-color: #666;
+  color: #FFF;
+  text-transform: uppercase;
+
+
+}
 </style>
 
 
 <div id="panel-top">
   <header>
+    <button ng-click="leftPanelExpanded = !leftPanelExpanded">open menu</button>
   <h1>CMS</h1>
   <span>This is CMS Page</span>
   </header>
+
+  <div id="userTopBtn"><button>Login</button></div>
 </div>

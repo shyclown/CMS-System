@@ -1,4 +1,5 @@
-<body>
+<body ng-app="page" ng-controller="cms">
+
 <?php
 include "/templates/panel_top.php";
 include "/templates/nav_top.php";

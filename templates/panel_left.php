@@ -26,7 +26,7 @@
 }
 </style>
 
-<div id="left-panel">
+<div id="left-panel" ng-show="leftPanelExpanded">
   <div id="left-panel-content">
     <ul>
       <li><a href="/">Link</a></li>
