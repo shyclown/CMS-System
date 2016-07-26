@@ -60,7 +60,13 @@ class Database{
           if($returning == 'array'){ return $_array; }
         }
         else {
-          return true;
+          if($returning == 'get_id'){
+            return $stmt->insert_id;
+          }
+          else{
+            return true;
+          }
+
         }
       }
       else{

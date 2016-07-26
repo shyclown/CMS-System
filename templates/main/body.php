@@ -1,6 +1,7 @@
 <body ng-app="page" ng-controller="cms">
 
 <?php
+
 include "/templates/panel_top.php";
 include "/templates/panel_user.php";
 include "/templates/nav_top.php";

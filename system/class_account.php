@@ -63,7 +63,14 @@ class Account
     $this->load_post_values();
     $this->check_values();
     if(empty($this->errors)){
-      $this->create_account();
+      $user_id = $this->create_account();
+      // create new user folder
+      $root = $_SERVER["DOCUMENT_ROOT"];
+      if (!file_exists($root.'/files/'.$user_id)) {
+          mkdir($root.'/files/'.$user_id, 0777, true);
+          echo 'created file';
+      }
+
       var_dump($this->errors);
       echo 'user created';
     }
@@ -165,7 +172,7 @@ class Account
   {
     $sql = "INSERT INTO `cms`.`el_users` (`id`, `user_login`, `user_pass`, `user_nicename`, `user_email`, `salt`) VALUES (NULL, ?, ?, 'Nicename' , ?, ?);";
     $params = array('ssss', $this->username , $this->password , $this->email, $this->salt);
-    $this->db->query($sql, $params);
+    return $this->db->query($sql, $params, 'get_id');
   }
 
   private function find_account()

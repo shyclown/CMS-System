@@ -34,6 +34,8 @@ font-family: 'Raleway', sans-serif;
 <label for="page-keywords">Key Words:</label>
 <input name="page-keywords" type="text" placeholder="Here write key words you wish to be associated with your page-content">
 
-
+<?php
+include_once 'system/run/file.php';
+?>
 </form>
 </div>
