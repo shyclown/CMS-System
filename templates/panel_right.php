@@ -28,13 +28,14 @@
 }
 #log > header{
   box-sizing: border-box;
-  background-color: #09F;
+  background-color: #06F;
+  color: #FFF;
   padding: 8px 16px;
   height: 32px;
 }
 #log > header > h2{
   font-size: 16px;
-  background-color: #09F;
+
   padding: 0px 0px;
   margin: 0px 0px;
 }
@@ -55,13 +56,13 @@
 }
 </style>
 
-<div id="log-panel">
+<div id="log-panel" ng-show="logPanelExpanded">
   <div id="log-panel-content">
     <div id="log">
       <header>
-      <h2>Log:</h2>
+      <h2><i class="fa fa-database fa-fw"></i> Log:</h2>
       </header>
-      <div class="close" id="log-panel-close-btn"><i class="fa fa-close"></i></div>
+      <div class="close" ng-click="logPanelExpanded = !logPanelExpanded"><i class="fa fa-close"></i></div>
     <?php
       $logs = $log->read();
       $logs_size = count($logs);

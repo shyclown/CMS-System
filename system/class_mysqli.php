@@ -1,5 +1,5 @@
 <?php
-require_once('define.php');
+require_once('/../define.php');
 // debug
 mysqli_report(MYSQLI_REPORT_ALL);
 class Database{
@@ -42,12 +42,14 @@ class Database{
   public function query($sql_string = null, $values = null, $returning = 'array'){
 
     if($stmt = $this->_mysqli->prepare($sql_string)){
+
       if($values){
         if(is_array($values)){
-          call_user_func_array(array($stmt, 'bind_param'), $this->refValues($values));
+
+          if(call_user_func_array(array($stmt, 'bind_param'), $this->refValues($values))){
+          };
         }
       }
-
       if($stmt->execute())
       {
         if($result = $stmt->get_result())
@@ -57,9 +59,12 @@ class Database{
             { $_array[] = $row; }
           if($returning == 'array'){ return $_array; }
         }
-        else { return true; }
+        else {
+          return true;
+        }
       }
-      else{ return false; }
+      else{
+        return false; }
       $stmt->close();
     }
   } // end of query

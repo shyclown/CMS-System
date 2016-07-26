@@ -23,14 +23,6 @@ font-size: 14px;
 font-family: 'Raleway', sans-serif;
 }
 
-
-.btn-sqr{
-  padding: 8px 16px;
-  margin: 16px;
-  border: none;
-  background-color: #666;
-  color: #FFF;
-}
 </style>
 <div class="page-wrap">
   <header>
