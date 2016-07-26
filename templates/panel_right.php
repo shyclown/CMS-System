@@ -62,7 +62,7 @@
       <header>
       <h2><i class="fa fa-database fa-fw"></i> Log:</h2>
       </header>
-      <div class="close" id="log-panel-close-btn"><i class="fa fa-close"></i></div>
+      <div class="close" ng-click="logPanelExpanded = !logPanelExpanded"><i class="fa fa-close"></i></div>
     <?php
       $logs = $log->read();
       $logs_size = count($logs);

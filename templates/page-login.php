@@ -7,10 +7,10 @@
   </div>
   <div class="card_content">
 
-  <form class="el-regular" name="Log_In" method="post" action="/test.php" autocomplete="off">
+  <form class="el-regular" name="Log_In" method="post" action="/system/run/log_in.php" autocomplete="off">
     <p>
     <label for="user_email">Email:</label>
-    <input name="user_email" type="text" placeholder="email" autocomplete="false" value="" />
+    <input name="user_login" type="text" placeholder="email" autocomplete="false" value="" />
     </p>
     <p>
     <label for="user_pass">Password:</label>
@@ -33,17 +33,21 @@
   <h2 class="form">Sign In</h2>
   </div>
   <div class="card_content">
-  <form class="regular" name="Sign_In" method="post" action="http://localhost/CMS-System/test.php" autocomplete="off">
+  <form class="regular" name="Sign_In" method="post" action="/system/run/sign_in.php" autocomplete="off">
     <p>
-    <label for="user_email">email:</label>
+    <label for="user_name">Username:</label>
+    <input name="user_name" type="text" placeholder="username" autocomplete="false" value="" />
+    </p>
+    <p>
+    <label for="user_email">Email:</label>
     <input name="user_email" type="text" placeholder="email" autocomplete="false" value="" />
     </p>
     <p>
-    <label for="user_pass">password:</label>
+    <label for="user_pass">Password:</label>
     <input name="user_pass" type="password" placeholder="password" autocomplete="false" value="" />
     </p>
     <p>
-    <label for="user_pass_two">repeat password:</label>
+    <label for="user_pass_two">Repeat password:</label>
     <input name="user_pass_two" type="password" placeholder="password" autocomplete="false" value="" />
     </p>
   </div>

@@ -13,6 +13,7 @@ class Account
   function __construct()
   {
     $this->db = new Database;
+    $this->create_table_if_not_exist();
     $this->errors = array();
   }
 
@@ -51,26 +52,28 @@ class Account
 
   private function load_post_values()
   {
-    $this->username = $_POST['username'];
-    $this->email = $_POST['email'];
-    $this->password = $this->generate_hash($_POST['password']);
-    $this->salt = $_POST['password']; // just for testing
+    $this->username = $_POST['user_name'];
+    $this->email = $_POST['user_email'];
+    $this->password = $this->generate_hash($_POST['user_pass']);
+    $this->salt = $_POST['user_pass']; // just for testing
   }
 
   public function create_new_account()
   {
     $this->load_post_values();
     $this->check_values();
-
-
-    if(empty($this->errors)){ $this->create_account(); echo 'created';}
+    if(empty($this->errors)){
+      $this->create_account();
+      var_dump($this->errors);
+      echo 'user created';
+    }
     else{ var_dump($this->errors); }
   }
 
   public function delete_current_account()
   {
     $this->user_id = $_SESSION['user_id'];
-    $sql = "INSERT INTO `elephant`.`el_users` (`id`, `user_login`, `user_pass`, `user_email`, `salt`) VALUES (NULL, ?, ?, ?, ?);";
+    $sql = "INSERT INTO `el_users` (`id`, `user_login`, `user_pass`, `user_email`, `salt`) VALUES (NULL, ?, ?, ?, ?);";
     $params = array('ssss', $this->username , $this->password , $this->email, $this->salt);
     $result = $db->query($sql, $params);
 
@@ -78,11 +81,13 @@ class Account
 
   public function login_account()
   {
-    $this->logname = $_POST['logname'];
-    $this->password = $_POST['password'];
+    $this->logname = $_POST['user_login'];
+    $this->password = $_POST['user_pass'];
     if($this->find_account()){
       $this->make_session();
-    //  $this->make_cookie();
+      if($_POST['remember_me']){
+        $this->make_cookie();
+      }
     }
     else{ echo "not valid username or password";}
 
@@ -158,10 +163,9 @@ class Account
 
   private function create_account()
   {
-    $sql = "INSERT INTO `elephant`.`el_users` (`id`, `user_login`, `user_pass`, `user_email`, `salt`) VALUES (NULL, ?, ?, ?, ?);";
+    $sql = "INSERT INTO `cms`.`el_users` (`id`, `user_login`, `user_pass`, `user_nicename`, `user_email`, `salt`) VALUES (NULL, ?, ?, 'Nicename' , ?, ?);";
     $params = array('ssss', $this->username , $this->password , $this->email, $this->salt);
-    $result = $this->db->query($sql, $params);
-    echo 'user created';
+    $this->db->query($sql, $params);
   }
 
   private function find_account()
