@@ -38,4 +38,10 @@ font-family: 'Raleway', sans-serif;
 include_once 'system/run/file.php';
 ?>
 </form>
+<droparea><i class="fa fa-cloud-upload fa-fw"></i> drop your files here or  <label class="custom-file-upload">
+  <input type="file" multiple/>
+  <i class="fa fa-external-link-square fa-fw"></i> Browse your Computer
+</label>
+<div class="results"></div>
+</droparea>
 </div>

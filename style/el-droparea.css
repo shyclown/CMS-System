@@ -1,0 +1,46 @@
+#el-droparea{
+  border: 1px solid #666;
+  background-color: #EAEAEA;
+  color: #666;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 16px;
+}
+#el-droparea input[type="file"]{
+  display: none;
+}
+#el-droparea label.custom-file-upload{
+  background: #666;
+  border-radius: 8px;
+  color: #FFF;
+  padding: 4px 10px 4px 8px;
+  margin-left: 8px;
+}
+droparea .file-line{
+  background-color: #D0D0D0;
+  font-size: 14px;
+  height: 24px;
+  margin: 4px 0px;
+  box-sizing: border-box;
+}
+droparea .file-type-wrap > i{
+  line-height: 24px;
+  width: 24px;
+  color: #EAEAEA;
+  background: #666;
+}
+droparea .file-name{
+  line-height: 14px;
+  padding: 5px 8px;
+}
+droparea .file-remove-wrap > i{
+  line-height: 24px;
+  width: 24px;
+  display: block;
+  float: right;
+  color: #EAEAEA;
+  background: #666;
+}
+droparea .results div:first-child{
+  margin-top: 24px;
+}
