@@ -1,34 +1,76 @@
 var ngApp = angular.module("page",[]);
-ngApp.controller('cms', function($scope){
- $scope.hey = "hi";
+
+ngApp.controller('cms', function($scope, $http){
  $scope.leftPanelExpanded = true;
  $scope.userPanelExpanded = false;
  $scope.logPanelExpanded = false;
 });
+
+ngApp.service(
+  'folderService',
+  ['$http', function( $http )
+    {
+      var folderService = this;
+      folderService.loadContent =  function(update){
+        $http.post('/system/ng/folderService.php',
+        { data:'loadContent'})
+        .then(function(response){
+          var data = response.data;
+          update(data);
+          return response.data;
+        }, function(response){
+          return response.statusText;
+        });
+      }
+      folderService.something = "something in folder Service";
+    }
+  ]
+);
+
+
 ngApp.directive('card',function(){
   return {
     transclude: true,
     templateUrl: '/templates/directives/card.html'
   }
 });
+ngApp.directive('filesystem',['folderService',function(folderService){
+  return {
+    scope: {},
+    templateUrl: '/templates/directives/filesystem.html',
+    link: function(scope){
+      scope.folder = [
+        {name: '1stFile',type:'1stType'},
+        {name: '2ndFile',type:'2ndType'}
+      ];
+      var update = function(data){ scope.folder = data; };
+      scope.files = folderService.loadContent(update);
+      scope.something = folderService.something;
+    }
+  }
+}]);
+ngApp.directive('fileitem',function(){
+  return {
+    scope:{
+      file: '=fileData',
+    },
+    templateUrl: '/templates/directives/fileitem.html',
+    link: function(scope){
+    }
+  }
+});
 ngApp.directive('droparea',function(){
   return {
     transclude: true,
     templateUrl: '/templates/directives/droparea.html',
-    link: function(scope, element, attrs) {
-
-    scope.tmp_file_array = {};
+    link: function(scope, element, attrs)
+    {
+      scope.roman = 'romanVariable';
+      scope.tmp_file_array = {};
 
       var droparea = element[0];
       var btn = angular.element(droparea.querySelector('.custom-file-upload'));
 
-      element.on('click',function(){
-        event.stopPropagation();
-      });
-      btn.on('click',function(){
-
-        event.stopPropagation();
-      });
       element.on('dragover',function(){
         event.preventDefault();
         event.stopPropagation();
@@ -52,42 +94,42 @@ ngApp.directive('droparea',function(){
         var self = this;
         var files = event.dataTransfer.files;
 
-      var FileLine = function(file)
-      {
-        this.exec = file.name.split('.').pop();
-        this.file = file;
-        var cls;
-
-        switch(this.exec)
+        var FileLine = function(file)
         {
-          case 'jpg': cls = 'file-image-o'; break;
-          case 'gif': cls = 'file-image-o'; break;
-          case 'png': cls = 'file-image-o'; break;
-          case 'pdf': cls = 'file-pdf-o'; break;
-          default: cls = 'file-o';
-        }
+          this.exec = file.name.split('.').pop();
+          this.file = file;
+          var cls;
 
-        var _new = function(oTag, oClass, oPlacement)
-        {
-          var el = document.createElement(oTag);
-          el.className = oClass;
-          if(oPlacement){ oPlacement.appendChild(el); }
-          return el;
-        };
+          switch(this.exec)
+          {
+            case 'jpg': cls = 'file-image-o'; break;
+            case 'gif': cls = 'file-image-o'; break;
+            case 'png': cls = 'file-image-o'; break;
+            case 'pdf': cls = 'file-pdf-o'; break;
+            default: cls = 'file-o';
+          }
 
-        this.wrap = _new('div','file-line',false);
-        this.type_wrap = _new('span','file-type-wrap',this.wrap);
-        this.type_icon = _new('i','fa fa-'+cls+' fa-fw',this.type_wrap);
-        this.file_name = _new('span','file-name',this.wrap);
-        this.file_name.innerHTML = file.name;
-        this.remove_wrap = _new('span','file-remove-wrap',this.wrap);
-        this.remove_icon = _new('i','fa fa-close fa-fw',this.remove_wrap);
+          var _new = function(oTag, oClass, oPlacement)
+          {
+            var el = document.createElement(oTag);
+            el.className = oClass;
+            if(oPlacement){ oPlacement.appendChild(el); }
+            return el;
+          };
+
+          this.wrap = _new('div','file-line',false);
+          this.type_wrap = _new('span','file-type-wrap',this.wrap);
+          this.type_icon = _new('i','fa fa-'+cls+' fa-fw',this.type_wrap);
+          this.file_name = _new('span','file-name',this.wrap);
+          this.file_name.innerHTML = file.name;
+          this.remove_wrap = _new('span','file-remove-wrap',this.wrap);
+          this.remove_icon = _new('i','fa fa-close fa-fw',this.remove_wrap);
 
         //this.remove_wrap.addEventListener('click',removeFromUpload.bind(this),false);
 
-      } // end of FileLine
+        } // end of FileLine
 
-      function listFiles()
+        function listFiles()
         {
           var results = droparea.getElementsByClassName('results')[0];
           results.innerHTML = '';
@@ -104,6 +146,10 @@ ngApp.directive('droparea',function(){
           fileInput.files = scope.tmp_file_array;
         }
         listFiles();
+      });
+    }
+  }
+});
         /*
 
         }
@@ -189,7 +235,3 @@ ngApp.directive('droparea',function(){
           return img;
         }
       }*/
-      });
-    }
-  }
-});
