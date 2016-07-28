@@ -62,11 +62,10 @@ class FileManager
       }
     }
   }
-  public function update_folder_parent($data) = {
+  public function update_folder_parent_byID($data) = {
     $user_id = $data['user_id'];
     $folder_id = $data['folder_id'];
     $parent_id = $data['parent_id'];
-    $new_folder_name = $data['folder_name'];
 
     if($this->is_logged_in()){
       if($this->user_owns_folder($folder_id)){
@@ -75,6 +74,24 @@ class FileManager
             $sql_update_parent = "UPDATE  `cms`.`el_folders` SET  `parent-id` = ? WHERE  `el_folders`.`id` =?";
             $params_update_parent = array( 'si', $parent_id, $folder_id);
             $this->db->query($sql_update_parent,$params_update_parent);
+          }
+        }
+      }
+    }
+  }
+  public function update_folders_parent_byParent($data) = {
+    $user_id = $data['user_id'];
+    $folder_id = $data['folder_id'];
+    $parent_id = $data['parent_id'];
+    $new_parent_id = $data['new_parent_id'];
+
+    if($this->is_logged_in()){
+      if($this->user_owns_folder($folder_id)){
+        if($this->user_owns_folder($parent_id)){
+          if($user_id = $this->user_id){
+            $sql_update_parents = "UPDATE  `cms`.`el_folders` SET  `parent-id` = ? WHERE  `el_folders`.`parent-id` =?";
+            $params_update_parents = array( 'si', $new_parent_id, $parent_id);
+            $this->db->query($sql_update_parents,$params_update_parents);
           }
         }
       }
