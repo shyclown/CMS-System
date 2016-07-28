@@ -22,7 +22,6 @@ ngApp.service(
           return response.statusText;
         });
       }
-      folderService.something = "something in folder Service";
     }
   ]
 );
@@ -39,26 +38,21 @@ ngApp.directive('filesystem',['folderService',function(folderService){
     scope: {},
     templateUrl: '/templates/directives/filesystem.html',
     link: function(scope){
-      scope.folder = [
-        {name: '1stFile',type:'1stType'},
-        {name: '2ndFile',type:'2ndType'}
-      ];
+      scope.folder = [];
       var update = function(data){ scope.folder = data; };
       scope.files = folderService.loadContent(update);
-      scope.something = folderService.something;
     }
   }
 }]);
 ngApp.directive('fileitem',function(){
   return {
-    scope:{
-      file: '=fileData',
-    },
+    scope:{ file: '=fileData' },
     templateUrl: '/templates/directives/fileitem.html',
     link: function(scope){
     }
   }
 });
+
 ngApp.directive('droparea',function(){
   return {
     transclude: true,
