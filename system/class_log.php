@@ -12,11 +12,11 @@
       $this->create_table_if_not_exist();
     }
     private function create_table_if_not_exist(){
-      $sql_query = "CREATE TABLE IF NOT EXIST `cms_log` (
-                    `id` int(4) NOT NULL AUTO_INCREMENT,
-                    `log` text NOT NULL,
-                    PRIMARY KEY (`id`)
-                  ) ENGINE=MyISAM AUTO_INCREMENT=267 DEFAULT CHARSET=latin1";
+      $sql_query = "CREATE TABLE IF NOT EXISTS `cms_log` (
+          `id` int(4) NOT NULL AUTO_INCREMENT,
+          `log` text COLLATE utf8_bin NOT NULL,
+          PRIMARY KEY (`id`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
       $this->db->query($sql_query);
     }
     public function insert($text){

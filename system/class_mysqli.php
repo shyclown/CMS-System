@@ -66,7 +66,6 @@ class Database{
           else{
             return true;
           }
-
         }
       }
       else{
