@@ -34,7 +34,6 @@ class FileManager
         }
       }
     }
-    $this->errors[] = 'Error: User is not Logged In /b';
     return false;
   }
 
@@ -48,12 +47,45 @@ class FileManager
       { return false; }
   }
 
-  private function remove_folder($data)
-  {
-    if($this->is_logged_in()){
-      $user_id = $data['user_id'];
-      $folder_id = $data['folder_id'];
+  public function update_folder_name($data) = {
+    $user_id = $data['user_id'];
+    $folder_id = $data['folder_id'];
+    $new_folder_name = $data['folder_name'];
 
+    if($this->is_logged_in()){
+      if($this->user_owns_folder($folder_id)){
+        if($user_id = $this->user_id){
+          $sql_update_name = "UPDATE  `cms`.`el_folders` SET  `name` = ? WHERE  `el_folders`.`id` =?";
+          $params_update_name = array( 'si', $new_folder_name, $folder_id);
+          $this->db->query($sql_update_name,$params_update_name);
+        }
+      }
+    }
+  }
+  public function update_folder_parent($data) = {
+    $user_id = $data['user_id'];
+    $folder_id = $data['folder_id'];
+    $parent_id = $data['parent_id'];
+    $new_folder_name = $data['folder_name'];
+
+    if($this->is_logged_in()){
+      if($this->user_owns_folder($folder_id)){
+        if($this->user_owns_folder($parent_id)){
+          if($user_id = $this->user_id){
+            $sql_update_parent = "UPDATE  `cms`.`el_folders` SET  `parent-id` = ? WHERE  `el_folders`.`id` =?";
+            $params_update_parent = array( 'si', $parent_id, $folder_id);
+            $this->db->query($sql_update_parent,$params_update_parent);
+          }
+        }
+      }
+    }
+  }
+  public function remove_folder($data)
+  {
+    $user_id = $data['user_id'];
+    $folder_id = $data['folder_id'];
+
+    if($this->is_logged_in()){
       if($this->user_owns_folder($folder_id)){
         if($user_id = $this->user_id){
 
@@ -65,9 +97,9 @@ class FileManager
           $params_folder = array('i', $folder_id );
 
           // update all files and folder where parent
-          $sql_select_owned = "SELECT * FROM  `el_user_folder` WHERE  `user-id` = ? AND `folder-id` = ? LIMIT 0 , 30";
-          $sql_update_files = "UPDATE  `el_folders` SET  `id` =8, `name` =8, `parent-id` = 0
-                                WHERE parent-id = ? "
+          $sql_update_files = "UPDATE  `el_folders` SET `parent-id` = 0  WHERE parent-id = ? ";
+          $params_update_files = array( 'i', $folder_id );
+          $this->db->query($sql_update_files, $params_update_files);
         }
         else{
           $this->errors[] = 'Specific Error: Requesting User is not Logged User!';
@@ -78,12 +110,13 @@ class FileManager
 
   public function create_new_folder($data)
   {
+    $sending_user = $data['user'];
+    $folder_name = $data['folder_name'];
+    $parent_id = $data['parent_id'];
+
     if($this->is_logged_in())
     {
 
-      $sending_user = $data['user'];
-      $folder_name = $data['folder_name'];
-      $parent_id = $data['parent_id'];
       if(!$this->user_owns_folder($parent_id) && $parent_id != 0)
       {
         $parent_id = 0;
