@@ -1,10 +1,19 @@
-# CMS-System
-CMS system files derived from older project 
+# CMS-System - very early stage of project
+- it is not working yet!
+- I am working on it alone and updating master directly (this is going to change in future after first functioning version);
 
-- Session moved to DB
-- Mysqli prepared statements
+I use this project to learn by trial and error. I am not profesional programmer so I hope I could get some great advices. 
+I am planing to comment more in future. For now I am focused on getting the first functioning version out.
 
-  to do:
-- Accounts
-- Files
-- Articles
+
+For now:
+- Class Session - moved to DB
+- Class Mysqli - prepared statements
+- Class Accounts - simple login
+
+Working on:
+- Class Filemanager;
+- Directives for Filemanager;
+
+TO DO:
+ALMOST EVERYTHING
