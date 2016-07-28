@@ -19,19 +19,19 @@ if($handle = opendir($_SERVER['DOCUMENT_ROOT'])){
       if (is_file($filepath))
       {
           $f = new stdClass();
-            $f->type = 'file';
+            $f->type = 'file-o';
             $f->name = $file;
           $files[] = $f;
       }
       else if (is_dir($filepath)){
           $f = new stdClass();
-            $f->type = 'dir';
+            $f->type = 'folder';
             $f->name = $file;
           $files[] = $f;
       }
   }
     closedir($handle);
-  
+
 }
 $filesJSON = json_encode($files);
 echo $filesJSON;

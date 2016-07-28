@@ -12,6 +12,10 @@ foreach (glob("style/*.css") as $filename){ echo '<link href="'.$filename.'" rel
 <!-- Angular JS -->
 <script src="/js/angular/angular.min.js"></script>
 <script src="/js/ng_controllers/myapp.js"></script>
+
+<?php
+foreach (glob("js/ng/*.js") as $filename){ echo '<script src="'.$filename.'" ></script>';}
+?>
 <!-- Google Font Raleway -->
 <link href='https://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 

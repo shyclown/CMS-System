@@ -1,0 +1,30 @@
+#el-filesystem{
+  border: 1px solid #666;
+  background-color: #EAEAEA;
+  color: #666;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 16px;
+}
+.el-fileitem .file-type-wrap{
+  display: inline-block;
+}
+.el-fileitem .file-type-wrap > i{
+
+  line-height: 24px;
+  width: 24px;
+  color: #EAEAEA;
+  background: #666;
+}
+.el-fileitem{
+  background-color: #D0D0D0;
+  font-size: 14px;
+  height: 24px;
+  margin: 4px 0px;
+  box-sizing: border-box;
+}
+.el-fileitem .file-name{
+  display: inline-block;
+  line-height: 14px;
+  padding: 5px 8px;
+}
