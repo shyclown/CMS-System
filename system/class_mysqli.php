@@ -56,8 +56,13 @@ class Database{
         {
           $_array = array();
           while($row = $result->fetch_array(MYSQL_ASSOC))
-            { $_array[] = $row; }
-          if($returning == 'array'){ return $_array; }
+          {
+            $_array[]= $row;
+          }
+          if($returning == 'array')
+          {
+            return $_array;
+          }
         }
         else {
           if($returning == 'get_id'){
