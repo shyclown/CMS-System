@@ -41,6 +41,6 @@ droparea .file-remove-wrap > i{
   color: #EAEAEA;
   background: #666;
 }
-droparea .results div:first-child{
+droparea .result{
   margin-top: 24px;
 }
