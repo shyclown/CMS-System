@@ -4,6 +4,7 @@
     <input type="file" multiple/>
     <i class="fa fa-external-link-square fa-fw"></i> Browse your Computer
   </label>
+  <div ng-bind-html = "res"></div>
   <div class="result" ng-show="hasResults()">
     <dropfile ng-repeat="file in upload" file-data="file"></dropfile>
   </div>

@@ -23,7 +23,8 @@ if($handle = opendir($_SERVER['DOCUMENT_ROOT'])){
             $f->name = $file;
           $files[] = $f;
       }
-      else if (is_dir($filepath)){
+      else if (is_dir($filepath))
+      {
           $f = new stdClass();
             $f->type = 'folder';
             $f->name = $file;

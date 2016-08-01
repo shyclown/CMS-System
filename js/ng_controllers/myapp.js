@@ -1,4 +1,4 @@
-var ngApp = angular.module("page",[]);
+var ngApp = angular.module("page",['ngSanitize']);
 
 ngApp.controller('cms', function($scope, $http){
  $scope.leftPanelExpanded = true;

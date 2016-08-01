@@ -11,6 +11,7 @@ foreach (glob("style/*.css") as $filename){ echo '<link href="'.$filename.'" rel
 ?>
 <!-- Angular JS -->
 <script src="/js/angular/angular.min.js"></script>
+<script src="/js/angular/angular-sanitize.min.js"></script>
 <script src="/js/ng_controllers/myapp.js"></script>
 
 <?php

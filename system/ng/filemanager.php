@@ -6,6 +6,9 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/system/class_session.php');
  *
  */
  new Session;
+/**
+ *
+ */
 
 class FileManager
 {
@@ -66,6 +69,10 @@ class FileManager
     $nr_folders = count($user_folders);
     for($i = 0; $i < $nr_folders; $i++ )
     {
+      /*SELECT *
+FROM el_user_folder
+INNER JOIN el_folders ON el_user_folder.`folder-id` = el_folders.id WHERE `user-id` = 0
+LIMIT 0 , 100*/
       $id = $user_folders[$i]['folder-id'];
       $sql_folder = "SELECT * FROM  `el_folders` WHERE `id` = ?";
       $params = array('i', $id );
@@ -110,7 +117,7 @@ class FileManager
     $user_id = $data['user_id'];
     $folder_id = $data['folder_id'];
     $parent_id = $data['parent_id'];
-
+/**/
     if($this->is_logged_in()){
       if($this->user_owns_folder($folder_id)){
         if($this->user_owns_folder($parent_id)){
@@ -179,6 +186,11 @@ class FileManager
   }
 }
 $fm = new FileManager;
+clearstatcache();
+echo $_SERVER['DOCUMENT_ROOT'].'/index.php';
+echo file_exists($_SERVER['DOCUMENT_ROOT'].'/index.php'); echo '<br/>';
+echo fileowner ( $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'index.php' );
+echo get_current_user ();
 var_dump($_SESSION);
 
 $a = ['user' => $fm->user_id , 'folder_name' => 'newName', 'parent_id'=>21 ];

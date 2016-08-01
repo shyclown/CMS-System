@@ -1,4 +1,4 @@
-ngApp.directive('droparea',function(){
+ngApp.directive('droparea', ['$http', function($http){
   return {
     transclude: true,
     scope:{},
@@ -18,7 +18,32 @@ ngApp.directive('droparea',function(){
       element.on('drop', function()
       {
         stopDefault();
+
         var files = event.dataTransfer.files;
+        console.log(files);
+
+        // -- angular doesnt have implemented progress data
+        // make ajax function able to send progress data
+        var data = new FormData();
+        angular.forEach(files, function(value){
+          data.append("files[]",value);
+        });
+        // create solution for old browsers not supporting Form Data 
+        $http({
+          method: 'POST',
+          url: '/system/ng/file.php',
+          data: data,
+          headers: {'Content-Type': undefined},
+          transformRequest: angular.identity
+        }).then(
+            function(response)
+            {
+            scope.res = response.data;
+            },
+            function(response){
+            scope.res = response.data;
+            }
+          );
 
         var assignIcon = function(file)
         {
@@ -41,4 +66,4 @@ ngApp.directive('droparea',function(){
       });
     }
   }
-});
+}]);
