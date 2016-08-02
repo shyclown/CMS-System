@@ -1,15 +1,4 @@
 <?php
-
-require_once($_SERVER['DOCUMENT_ROOT'].'/system/class_mysqli.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/system/class_session.php');
-/**
- *
- */
- new Session;
-/**
- *
- */
-
 class FileManager
 {
   var $db;
@@ -22,7 +11,7 @@ class FileManager
     $this->errors = [];
   }
 
-  private function is_logged_in()
+  public function is_logged_in()
   {
     if(isset($_SESSION)){
       if(isset($_SESSION['loged_in']) && $_SESSION['user_id']){
@@ -148,19 +137,4 @@ class FileManager
     }
   }
 }
-$fm = new FileManager;
-clearstatcache();
-echo $_SERVER['DOCUMENT_ROOT'].'/index.php';
-echo file_exists($_SERVER['DOCUMENT_ROOT'].'/index.php'); echo '<br/>';
-echo fileowner ( $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR .'index.php' );
-echo get_current_user ();
-var_dump($_SESSION);
-
-$a = ['user' => $fm->user_id , 'folder_name' => 'newName', 'parent_id'=>21 ];
-if($fm->create_new_folder($a)){ echo 'folder-created'; };
-
-echo 'files with parent 21';
-$folders = $fm->load_folders_inFolder(21);
-var_dump($folders);
-
  ?>

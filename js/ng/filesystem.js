@@ -6,15 +6,15 @@ ngApp.service(
       var folderService = this;
       var targetPHP = '/system/ng/folderService.php';
 
-      folderService.loadFolders = function(update){
+      folderService.loadAllFolders = function(update){
         $http.post(targetPHP,
-          { data:'loadFolders'})
+          { action:'loadAllFolders' })
           .then(function(response){
-            update(response.data);},
-            function(response){
-            return false;  
-            }
-          })
+            console.log(response.data);
+            update(response.data);
+          }, function(response){
+            return false;
+          });
       }
       folderService.loadContent =  function(update){
         $http.post('/system/ng/folderService.php',
@@ -39,7 +39,7 @@ ngApp.directive('filesystem',['folderService',function(folderService){
     link: function(scope){
       scope.folder = [];
       var update = function(data){ scope.folder = data; };
-      scope.files = folderService.loadContent(update);
+      scope.files = folderService.loadAllFolders(update);
     }
   }
 }]);
