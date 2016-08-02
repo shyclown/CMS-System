@@ -1,4 +1,5 @@
 <?php
+require_once($_SERVER['DOCUMENT_ROOT'].'/system/ng/filemanager.php');
 $fileData = file_get_contents("php://input");
 $ng_data = json_decode($fileData);
 if($ng_data->data == 'loadContent'){
@@ -37,4 +38,10 @@ if($handle = opendir($_SERVER['DOCUMENT_ROOT'])){
 $filesJSON = json_encode($files);
 echo $filesJSON;
 }
+
+function loadFolders(){
+
+
+}
+
 ?>
