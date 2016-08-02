@@ -27,7 +27,7 @@ class FileManager
 
   private function user_owns_folder($folder_id)
   {
-      $sql = "SELECT * FROM  `el_user_folder` WHERE  `user-id` = ? AND `folder-id` = ? LIMIT 1";
+      $sql = "SELECT * FROM  `el_user_folder` WHERE  `user_id` = ? AND `folder_id` = ? LIMIT 1";
       $params = array('ii',$this->user_id, $folder_id);
       if($result = $this->db->query($sql, $params))
       { return true; }
@@ -38,8 +38,8 @@ class FileManager
   public function load_all_folders()
   {
     $sql = "SELECT * FROM el_user_folder INNER JOIN el_folders
-            ON el_user_folder.`folder-id` = el_folders.id
-            WHERE `user-id` = ?" ;
+            ON el_user_folder.`folder_id` = el_folders.id
+            WHERE `user_id` = ?" ;
     $params = array( 'i', $this->user_id );
     return $this->db->query($sql,$params);
   }
@@ -47,8 +47,8 @@ class FileManager
   public function load_folders_inFolder($in_folder_id)
   {
     $sql = "SELECT * FROM el_user_folder INNER JOIN el_folders
-            ON el_user_folder.`folder-id` = el_folders.id
-            WHERE `user-id` = ? AND `parent-id` = ?" ;
+            ON el_user_folder.`folder_id` = el_folders.id
+            WHERE `user_id` = ? AND `parent_id` = ?" ;
     $params = array( 'ii', $this->user_id, $in_folder_id );
     return $this->db->query($sql,$params);
   }
@@ -76,7 +76,7 @@ class FileManager
     {
       if($this->user_owns_folder($parent_id))
       {
-        $sql_update_parent = "UPDATE  `cms`.`el_folders` SET  `parent-id` = ? WHERE  `el_folders`.`id` =?";
+        $sql_update_parent = "UPDATE  `cms`.`el_folders` SET  `parent_id` = ? WHERE  `el_folders`.`id` =?";
         $params_update_parent = array( 'si', $parent_id, $folder_id);
         $this->db->query($sql_update_parent,$params_update_parent);
       }
@@ -85,19 +85,16 @@ class FileManager
 
   private function update_folders_parent_byParent($parent_id, $new_parent_id)
   {
-    $sql_update_parents = "UPDATE  `cms`.`el_folders` SET  `parent-id` = ? WHERE  `el_folders`.`parent-id` =?";
+    $sql_update_parents = "UPDATE  `cms`.`el_folders` SET  `parent_id` = ? WHERE  `el_folders`.`parent_id` =?";
     $params_update_parents = array( 'si', $new_parent_id, $parent_id);
     $this->db->query($sql_update_parents,$params_update_parents);
   }
 
-  public function remove_folder($data)
+  public function remove_folder($folder_id)
   {
-
-    $folder_id = $data['folder_id'];
-
     if($this->user_owns_folder($folder_id))
     {
-      $sql_user_folder = "DELETE FROM  `el_user_folder` WHERE `user-id` = ? AND `folder-id` = ?";
+      $sql_user_folder = "DELETE FROM  `el_user_folder` WHERE `user_id` = ? AND `folder_id` = ?";
       $params_user_folder = array( 'ii', $this->user_id, $folder_id );
       $this->db->query($sql_user_folder, $params_user_folder);
 
@@ -108,7 +105,8 @@ class FileManager
           // set affected folders parent to root;
       $this->update_folders_parent_byParent( $folder_id , 0 );
           // set affected files parent to root;
-      $this->update_files_parent_byParent( $folder_id , 0 );
+      //$this->update_files_parent_byParent( $folder_id , 0 );
+      echo 'deleted: '.$folder_id;
     }
   }
 
@@ -124,13 +122,13 @@ class FileManager
       $this->errors[] = 'Specific Error: Requesting User doesn\'t own Parent Folder';
     }
 
-    $sql_insert_folder = "INSERT INTO  `cms`.`el_folders` ( `id` , `name` , `parent-id` )
+    $sql_insert_folder = "INSERT INTO  `cms`.`el_folders` ( `id` , `name` , `parent_id` )
                           VALUES ( NULL ,  ?,  ? )";
     $params = array('si', $folder_name ,$parent_id);
 
     if($new_folder_id = $this->db->query($sql_insert_folder, $params, 'get_id'))
     {
-      $sql_user_folder = "INSERT INTO `cms`.`el_user_folder` (`user-id`, `folder-id`)
+      $sql_user_folder = "INSERT INTO `cms`.`el_user_folder` (`user_id`, `folder_id`)
                           VALUES (?, ?)";
       $params_user_folder = array('ii', $this->user_id, $new_folder_id);
       $this->db->query($sql_user_folder, $params_user_folder);

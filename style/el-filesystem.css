@@ -6,13 +6,20 @@
   padding: 24px;
   margin: 16px;
 }
-.el-fileitem .file-type-wrap{
-  display: inline-block;
-}
 .el-fileitem .file-type-wrap > i{
-
+  display: block;
+  float: left;
   line-height: 24px;
   width: 24px;
+  color: #EAEAEA;
+  background: #666;
+}
+
+.el-fileitem .file-remove-wrap > i{
+  line-height: 24px;
+  width: 24px;
+  display: block;
+  float: right;
   color: #EAEAEA;
   background: #666;
 }
@@ -24,7 +31,8 @@
   box-sizing: border-box;
 }
 .el-fileitem .file-name{
-  display: inline-block;
+  display: block;
+  float: left;
   line-height: 14px;
   padding: 5px 8px;
 }
