@@ -8,7 +8,28 @@ class FileManager
   function __construct()
   {
     $this->db = new Database;
+    $this->create_elFolders_table();
+    $this->create_elUserFolder_table();
     $this->errors = [];
+  }
+
+  private function create_elFolders_table(){
+    $sql = "CREATE TABLE IF NOT EXISTS `el_folders` (
+            `id` int(8) NOT NULL AUTO_INCREMENT,
+            `name` varchar(64) COLLATE utf8_bin NOT NULL,
+            `parent_id` int(8) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`)
+          ) ENGINE=InnoDB AUTO_INCREMENT=71
+          DEFAULT CHARSET=utf8 COLLATE=utf8_bi";
+    $this->db->query($sql);
+  }
+  private function create_elUserFolder_table(){
+    $sql = "CREATE TABLE IF NOT EXISTS `el_user_folder` (
+            `user_id` int(8) NOT NULL,
+            `folder_id` int(8) NOT NULL
+            ) ENGINE=InnoDB
+            DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
+    $this->db->query($sql);
   }
 
   public function is_logged_in()

@@ -1,0 +1,48 @@
+.new-folder-wrap{
+  display: inline-block;
+  height: 32px;
+  clear: both;
+  background-color: #D0D0D0;
+  padding: 8px;
+}
+.new-folder-wrap i{
+  box-sizing: border-box;
+  display: inline-block;
+  text-align: center;
+  width: 32px;
+  height: 32px;
+  padding: 0px;
+  margin: 0px;
+}
+.new-folder-wrap input{
+  box-sizing: border-box;
+  display: inline-block;
+  outline: none;
+  border: none;
+  line-height: 16px;
+  font-size: 14px;
+  padding: 8px 8px;
+  height: 32px;
+}
+.new-folder-wrap button{
+  box-sizing: border-box;
+  display: inline-block;
+  outline: none;
+  border: none;
+  line-height: 16px;
+  font-size: 14px;
+  padding: 8px 8px 8px 8px;
+  background: #666;
+  color: #EAEAEA;
+  height: 32px;
+}
+.new-folder-wrap button i{
+  font-size: 14px;
+  line-height: 16px;
+}
+.new-folder-wrap button:hover{
+  background-color: #777;
+}
+.new-folder-wrap button:hover i{
+  color: #FFFFFF;
+}
