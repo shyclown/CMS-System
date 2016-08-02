@@ -2,9 +2,12 @@
 require_once($_SERVER['DOCUMENT_ROOT'].'/system/class_mysqli.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/system/class_session.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/system/ng/class_filemanager.php');
+
 new Session;
 
 $fm = new FileManager;
+
+
 $fileData = file_get_contents("php://input");
 $ng_data = json_decode($fileData);
 $result;
