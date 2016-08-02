@@ -10,6 +10,7 @@ ngApp.service(
         $http.post(targetPHP,
           { action:'loadAllFolders' })
           .then(function(response){
+            console.log(response.data)
             update(response.data);
           }, function(response){
             return false;
@@ -26,6 +27,20 @@ ngApp.service(
           }, function(response){
             console.log(response);
             return false;
+          });
+      }
+      folderService.createNewFolder = function( folder_name, parent_id, callback ){
+        $http.post(targetPHP,
+          {
+            action:'createNewFolder',
+            folder_name: folder_name,
+            parent_id: parent_id
+          })
+          .then(function(response){
+            callback(response.data);
+            console.log(response.data);
+          }, function(response){
+            console.log(response.data);
           });
       }
       folderService.loadContent =  function(update){
@@ -50,8 +65,22 @@ ngApp.directive('filesystem',['folderService',function(folderService){
     templateUrl: '/templates/directives/filesystem.html',
     link: function(scope){
       scope.folders = [];
+      scope.parent_id = 0;
+      scope.addFolderInput = false;
+
       var update = function(data){ scope.folders = data; };
       folderService.loadAllFolders(update);
+
+      var callback_create_folder = function(data){
+        if(data){
+          scope.new_folder_name = "";
+          folderService.loadAllFolders(update); }
+      }
+      scope.create_new_folder = function(){
+        var folder_name = scope.new_folder_name;
+        var parent_id = scope.parent_id;
+        folderService.createNewFolder(folder_name,parent_id, callback_create_folder);
+      }
     }
   }
 }]);

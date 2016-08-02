@@ -3,7 +3,7 @@
 class FileManager
 {
   protected $db;
-  protected $errors;
+  public $errors;
   protected $user_id;
 
   function __construct()
@@ -27,8 +27,8 @@ class FileManager
               `name` varchar(64) COLLATE utf8_bin NOT NULL,
               `parent_id` int(8) NOT NULL DEFAULT '0',
               PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=71
-            DEFAULT CHARSET=utf8 COLLATE=utf8_bi";
+            ) ENGINE=InnoDB
+            DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
       $this->db->query($sql);
   }
   private function create_elUserFolder_table()
@@ -47,8 +47,8 @@ class FileManager
             `name` varchar(64) COLLATE utf8_bin NOT NULL,
             `parent_id` int(8) NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`)
-          ) ENGINE=InnoDB AUTO_INCREMENT=71
-          DEFAULT CHARSET=utf8 COLLATE=utf8_bi";
+          ) ENGINE=InnoDB
+          DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
     $this->db->query($sql);
   }
   private function create_elUserFile_table()
@@ -76,7 +76,7 @@ class FileManager
     $this->errors[] = 'User is not logged in.';
     return false;
   }
-  protected function is_users_file($file_id)
+  protected function user_owns_file($file_id)
   {
     $sql = "SELECT * FROM  `el_user_file` WHERE  `user_id` = ? AND `file_id` = ? LIMIT 1";
     $params = array('ii',$this->user_id, $file_id);
@@ -95,7 +95,6 @@ class FileManager
       else
       { return false; }
   }
-}
 
 //-----------------------------------------------------
 // Folders functions
@@ -178,9 +177,8 @@ public function remove_folder($folder_id)
 
 public function create_new_folder($data)
 {
-  $sending_user = $data['user'];
-  $folder_name = $data['folder_name'];
-  $parent_id = $data['parent_id'];
+  $folder_name = $data->folder_name;
+  $parent_id = $data->parent_id;
 
   if(!$this->user_owns_folder($parent_id) && $parent_id != 0)
   {
@@ -197,8 +195,11 @@ public function create_new_folder($data)
     $sql_user_folder = "INSERT INTO `cms`.`el_user_folder` (`user_id`, `folder_id`)
                         VALUES (?, ?)";
     $params_user_folder = array('ii', $this->user_id, $new_folder_id);
-    $this->db->query($sql_user_folder, $params_user_folder);
+    if($this->db->query($sql_user_folder, $params_user_folder)){
+      return true;
+    };
   }
+  return false;
 }
 
 //-----------------------------------------------------
@@ -278,14 +279,13 @@ public function change_file_parent($file_id,$parent_id)
 }
 
 public function update_files_parent_byParent($old_parent_id, $new_parent_id){
-  if($this->user_owns_file($file_id))
-  {
-    if($this->user_owns_folder($parent_id))
+    if($this->user_owns_folder($new_parent_id))
     {
       $sql_update_parents = "UPDATE  `cms`.`el_files` SET  `parent_id` = ? WHERE  `el_files`.`parent_id` =?";
       $params_update_parents = array( 'ii', $new_parent_id, $old_parent_id);
       $this->db->query($sql_update_parents,$params_update_parents);
     }
-  }
 }
+
+}//end of class
  ?>

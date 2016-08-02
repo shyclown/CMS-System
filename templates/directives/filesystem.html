@@ -2,7 +2,7 @@
 <div class="new-folder-wrap">
   <form>
   <i class="fa fa-folder-o fa-fw"></i>
-  <input class="new-folder-input" type="text" ng-model="new_folder_name" placeholder="New Folder Name"><button ng-click="create_new_folder()">
+  <input class="new-folder-input" type="text" ng-model="new_folder_name" placeholder="New Folder Name"><button ng-disabled="(new_folder_name=='')" ng-click="create_new_folder()">
   <i class="fa fa-plus fa-fw"></i>
   </button>
   </form>

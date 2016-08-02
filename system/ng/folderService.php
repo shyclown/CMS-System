@@ -10,7 +10,7 @@ $fm = new FileManager;
 
 $fileData = file_get_contents("php://input");
 $ng_data = json_decode($fileData);
-$result;
+$result = '';
 
 if($fm->is_logged_in())
 {
@@ -24,6 +24,9 @@ if($fm->is_logged_in())
         break;
       case 'loadFoldersInFolder':
         $result = json_encode($fm->load_folders_inFolder($data));
+        break;
+      case 'createNewFolder':
+        $result = $fm->create_new_folder($data) ? true : false;
         break;
       case 'removeFolder':
         $result = $fm->remove_folder($data->folder_id);
