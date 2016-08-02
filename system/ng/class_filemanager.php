@@ -55,7 +55,7 @@ class FileManager
   {
     $sql = "CREATE TABLE IF NOT EXISTS `el_user_file` (
             `user_id` int(8) NOT NULL,
-            `folder_id` int(8) NOT NULL
+            `file_id` int(8) NOT NULL
             ) ENGINE=InnoDB
             DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
     $this->db->query($sql);
