@@ -1,38 +1,103 @@
 #el-filesystem{
   border: 1px solid #666;
-  background-color: #EAEAEA;
+  background-color: #FFF;
   color: #666;
-  border-radius: 8px;
-  padding: 24px;
+  padding: 0px;
   margin: 16px;
+}
+#el-filesystem  .clr{
+  clear: both;
+}
+#el-filesystem .pathFolder{
+  cursor: pointer;
+  box-sizing: border-box;
+  display: block;
+  padding: 16px 8px 16px 8px;
+  height: 48px;
+  line-height: 16px;
+  float: left;
+  background-color: #FFF;
+}
+#el-filesystem .pathFolder:hover{
+    background-color: #D0D0D0;
+}
+#el-filesystem > .leftPanel{
+  box-sizing: border-box;
+  border-right: 1px solid #666;
+  padding: 8px;
+  float: left;
+  width: 250px;
+}
+#el-filesystem > .topPanel{
+  box-sizing: border-box;
+  border-bottom: solid 1px #666;
+  width: 100%;
+}
+#el-filesystem > .rightPanel{
+  box-sizing: border-box;
+
+  float: right;
+  width: calc(100%-250px);
 }
 .el-fileitem .file-type-wrap > i{
   display: block;
   float: left;
   line-height: 24px;
   width: 24px;
-  color: #EAEAEA;
-  background: #666;
+  color: #666;
+  background: #FFF;
 }
 
 .el-fileitem .file-remove-wrap > i{
+  display: none;
   line-height: 24px;
   width: 24px;
-  display: block;
   float: right;
-  color: #EAEAEA;
-  background: #666;
+  color: #666;
+  background: #FFF;
+}
+.el-fileitem:hover .file-remove-wrap > i{
+  display: block;
+  background: #FFF;
+}
+.el-fileitem:hover .file-remove-wrap > i:hover{
+  display: block;
+  color: #FFF;
+  background: #e62e00;
 }
 .el-fileitem{
-  background-color: #D0D0D0;
+  background-color: #FFF;
   font-size: 14px;
   height: 24px;
+  width: calc(100%-16px);
+  margin: 4px 0px;
+  box-sizing: border-box;
+}
+folder > div.thechild {
+  padding-left: 16px;
+}
+folder > div.thechild > folder > .el-fileitem{
+}
+.el-fileitem:hover{
+  cursor: pointer;
+  background-color: #EAEAEA;
+  font-size: 14px;
+  height: 24px;
+  width: calc(100%-16px);
   margin: 4px 0px;
   box-sizing: border-box;
 }
 .el-fileitem .file-name{
   display: block;
   float: left;
+  line-height: 14px;
+  padding: 5px 8px;
+}
+.el-fileitem .file-name:hover{
+  display: block;
+  float: left;
+  font-weight: 800;
+  color: #000;
   line-height: 14px;
   padding: 5px 8px;
 }

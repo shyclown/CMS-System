@@ -1,13 +1,23 @@
 <div id="el-filesystem">
-<div class="new-folder-wrap">
-  <form>
-  <i class="fa fa-folder-o fa-fw"></i>
-  <input class="new-folder-input" type="text" ng-model="new_folder_name" placeholder="New Folder Name"><button ng-disabled="(new_folder_name=='')" ng-click="create_new_folder()">
-  <i class="fa fa-plus fa-fw"></i>
-  </button>
-  </form>
-</div>
-<folder ng-repeat="folder in folders" folder-data = "folder" folders-data = "folders"></folder>
-<fileitem ng-repeat="file in files" file-data="file"></fileitem>
+  <div class="topPanel">
+    <div class=pathFolder><i class="fa fa-folder-open fa-fw"></i><span>Page /</span></div>
+    <div class=pathFolder><span>MyFolder /</span></div>
+    <div class="new-folder-wrap">
+      <form>
+      <i class="fa fa-folder-o fa-fw"></i>
+      <input class="new-folder-input" type="text" ng-model="new_folder_name" placeholder="New Folder Name"><button ng-disabled="(new_folder_name=='')" ng-click="create_new_folder()">
+      <i class="fa fa-plus fa-fw"></i>
+      </button>
+      </form>
+    </div></div>
+  <div class="leftPanel">
 
+          <folder ng-repeat="folder in folders" folder-data = "folder" folders-data = "folders" main-data = "folders" ></folder>
+          <fileitem ng-repeat="file in files" file-data="file"></fileitem>
+  </div>
+  <div class="rightPanel">
+
+
+  </div>
+  <div class="clr"></div>
 </div>

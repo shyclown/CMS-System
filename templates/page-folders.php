@@ -27,21 +27,14 @@ font-family: 'Raleway', sans-serif;
 <h2>My Folders</h2>
 <p>here you can setup all page settings</p>
   </header>
-<form class="el-regular" name="page-name-form">
-<label for="page-name">New Folder Name:</label>
-<input name="page-name" type="text" placeholder="Here write name of your page">
-
-<label for="page-keywords">Key Words:</label>
-<input name="page-keywords" type="text" placeholder="Here write key words you wish to be associated with your page-content">
-
 <?php
 include_once 'system/run/file.php';
 ?>
-</form>
+<!-- ___________________________________________________________________
+  - Angular JS - directive HTML template: /templates/directives/droparea.html -->
 <droparea></droparea>
-
-<filesystem>
-
-</filesistem>
+<!-- ___________________________________________________________________
+- Angular JS - directive HTML template: /templates/directives/filesystem.html-->
+<filesystem></filesistem>
 
 </div>

@@ -2,8 +2,11 @@
   display: inline-block;
   height: 32px;
   clear: both;
-  background-color: #D0D0D0;
+  background-color: #FFF;
   padding: 8px;
+}
+.new-folder-wrap:hover{
+  background-color: #D0D0D0;
 }
 .new-folder-wrap i{
   box-sizing: border-box;
@@ -24,7 +27,7 @@
   padding: 8px 8px;
   height: 32px;
 }
-.new-folder-wrap button{
+.new-folder-wrap:hover button{
   box-sizing: border-box;
   display: inline-block;
   outline: none;
@@ -36,11 +39,14 @@
   color: #EAEAEA;
   height: 32px;
 }
+.new-folder-wrap button{
+  display: none;
+}
 .new-folder-wrap button i{
   font-size: 14px;
   line-height: 16px;
 }
-.new-folder-wrap button:hover{
+.new-folder-wrap:hover button:hover{
   background-color: #777;
 }
 .new-folder-wrap button:hover i{
