@@ -66,10 +66,24 @@ ngApp.directive('filesystem',['folderService',function(folderService){
     link: function(scope){
 
       scope.folders = [];
-      scope.root = [];
+
       scope.parent_id = 0;
       scope.addFolderInput = false;
 
+      scope.openFolder;
+      scope.openPath = [];
+
+      // @ pseudo
+      var find_path = function(){
+
+        var folder = scope.openFolder;
+        var parent = folder.parent_id;
+        do{
+          scope.openPath.push(parent);
+          folder = select(parent);
+        }
+        while(parent = 0);
+      }
       var find_children = function(data)
       {
         var folders = data;
@@ -110,7 +124,7 @@ ngApp.directive('filesystem',['folderService',function(folderService){
         scope.folders = data;
         scope.folders = find_children(scope.folders);
         scope.folders = find_root();
-      };
+      }
       folderService.loadAllFolders(update);
 
       var callback_create_folder = function(data)
@@ -133,7 +147,7 @@ ngApp.directive('filesystem',['folderService',function(folderService){
 ngApp.directive('folder',['folderService','$compile',function(folderService,$compile){
   return {
     scope: {
-      mainFolders: '=mainData',
+      mainFolders:'=mainData',
       folders:'=foldersData',
       folder: '=folderData'
     },
@@ -146,14 +160,14 @@ ngApp.directive('folder',['folderService','$compile',function(folderService,$com
       scope.toogleIt = function()
       {
         scope.isOpen = !scope.isOpen;
-      };
+      }
       scope.remove = function()
       {
         if(folderService.removeFolder(scope.folder.id))
         {
           console.log(scope.folder.id);
           console.log('folder was removed');
-        };
+        }
         var index = scope.folders.indexOf(scope.folder);
         var children = scope.folder.child_folders;
         if(children.length > 0)
