@@ -146,11 +146,11 @@ ngApp.directive('filesystem',['folderService',function(folderService){
 
 ngApp.directive('folder',['folderService','$compile',function(folderService,$compile){
   return {
-    scope: {
-      mainFolders:'=mainData',
-      folders:'=foldersData',
-      folder: '=folderData'
-    },
+  //  scope: {
+  //    mainFolders:'=mainData',
+  //    folders:'=foldersData',
+  //    folder: '=folderData'
+  //  },
     templateUrl: '/templates/directives/folder.html',
     link: function(scope, element)
     {
