@@ -34,7 +34,6 @@ class txtArea{
   }
 
   hide_textarea(){
-    console.log(this._(this.area_id));
     this._(this.area_id).type = 'hidden';
   }
   create_editor_wrap(){
@@ -48,8 +47,10 @@ class txtArea{
   }
   create_content_wrap(){
     this.content_wrap = this._el('DIV');
+    this.content_wrap.innerHTML = this._(this.area_id).value;
     this.content_wrap.contentEditable = true;
     this.el_editor_wrap.appendChild(this.content_wrap);
+    this.content_wrap.classList.add('el_cont_area');
   }
   create_html_switch_wrap(){
     this.switch_wrap = this._el('DIV');
@@ -98,14 +99,15 @@ class txtArea{
           selectedElement.parentElement.removeChild(selectedElement);
         }
       }*/
+      var range = document.getSelection();
+      var selectedElement = document.getSelection().anchorNode.parentElement;
+
+      var id = selectedElement.parentNode.id;
+
       /*else */if(sValue=="p"||sValue=="h2"||sValue=="h3")
       {
-        let range = document.getSelection();
-        let selectedElement = document.getSelection().anchorNode.parentElement;
-        let tag = selectedElement.tagName;
-        let getTag = sValue.toUpperCase();
-        let id = selectedElement.parentNode.id;
-
+        var tag = selectedElement.tagName;
+        var getTag = sValue.toUpperCase();
         if(tag == getTag || tag =='LI'){} //do nothingid!='article-content'
         else
         {
@@ -114,14 +116,66 @@ class txtArea{
       }
       else
       {
-        document.execCommand(sCmd, false, sValue); this.content_wrap.focus();
+        document.execCommand(sCmd, false, sValue);// this.content_wrap.focus();
       }
     }
   }
+  make_code_tag()
+  {
+    //later check
+    var selectedElement = document.getSelection().anchorNode.parentElement;
+    console.log(selectedElement);
+    var wraper = selectedElement.parentElement;
+    var tag = selectedElement.tagName;
 
-  remove_format(){
+    if( selectedElement.className == "code_line" ){}
+    else{
+      this.format_doc('removeFormat');
+      this.format_doc('formatblock','p');
+
+    var elContent = selectedElement.innerHTML;
+    var elSelection = document.getSelection();
+    var realContent = elSelection.getRangeAt(0).extractContents();
+    var temp = this._el('span');
+    temp.appendChild(realContent)
+    var content = temp.innerHTML;
+    console.log(temp);
+    //there is problem when no <br>;
+    var newContent = '<div class="code_line">'+content.split('<br>').join('</div><div class="code_line">')+'</div>';
+
+    this.format_doc('insertHTML','<div class="code">'+newContent+'</div>');
+    }
+  }
+  remove_format()
+  {
+    // because of DIV - CODE element
+    var selectedElement = document.getSelection().anchorNode.parentElement;
+    var tag = selectedElement.tagName;
+    var wraper = selectedElement.parentElement;
+
+    if (wraper.className == 'code')
+    {
+        var newContent = '';
+
+        if(wraper.hasChildNodes())
+        {
+          var newContent = '';
+          var children = wraper.childNodes;
+          for(var i=0; i< children.length; i++){
+            var lineEnd = '<br/>';
+            if(i==(children.length - 1)){lineEnd = '';}else{}
+            newContent += children[i].innerHTML+lineEnd;
+          }
+        }
+        var p = this._el('p');
+        p.innerHTML = newContent;
+        wraper.parentNode.insertBefore(p, wraper);
+        wraper.parentNode.removeChild(wraper);
+    }
+    else{
     this.format_doc('removeFormat');
     this.format_doc('formatblock','p');
+    }
   }
   validate_mode(){
     if (!this.switch.checked) { return true ; }
@@ -255,12 +309,12 @@ class txtArea{
       Code: {
         nicename:'Code',
         fname:'code_icon.png',
-        btn_event: function(){self.format_doc('formatblock','code')}
+        btn_event: function(){self.make_code_tag();}
       },
       Print: {
         nicename:'Print',
         fname:'print.png',
-        btn_event: function(){self.printDoc()}
+        btn_event: function(){self.printDoc();}
       },
     }
     var populate = function()

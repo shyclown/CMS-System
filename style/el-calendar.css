@@ -1,0 +1,73 @@
+.calendar-wrap{
+  width: 200px;
+}
+.calendar-table{
+  border-collapse: collapse;
+  background-color: #FFF;
+  font-size: 14px;
+  width: 100%;
+}
+.calendar-header-month{
+  font-size: 18px;
+  font-weight: 300;
+  padding: 4px 0px;
+}
+
+/* Names of days - tr wrap */
+.calendar-header{
+  background-color: #E0E0E0;
+  font-size: 14px;
+}
+/* Names of days - th values */
+.calendar-header-day{
+  box-sizing: border-box;
+  font-size: 12px;
+  padding: 4px 0px;
+  width: 32px;
+  text-align: center;
+}
+/* Number of days - th values*/
+.calendar-day{
+  vertical-align: middle;
+  text-align: center;
+  padding: 4px 0px;
+  font-size: 14px;
+  background-color: #EFEFEF;
+}
+.calendar-day:hover{
+  background-color: #999;
+  cursor: pointer;
+}
+/* Calendar selection */
+.cal-select{
+  background-color: #09F;
+}
+
+.cal-btn-row{
+  width: 100%;
+  background-color: #09F;
+  height: 28px;
+}
+
+.cal-btn{
+  font-weight: 300;
+  font-size: 12px;
+  text-transform: uppercase;
+  background-color: #09F;
+  color: #FFF;
+  padding: 8px;
+  line-height: 12px;
+  cursor: pointer;
+}
+.cal-btn:hover{
+  background-color: #07F;
+}
+.cal-select:hover{
+  background-color: #07F;
+}
+.cal-right{
+  float:right;
+}
+.cal-left{
+  float: left;
+}

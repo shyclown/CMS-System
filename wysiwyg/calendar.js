@@ -10,6 +10,8 @@ var Calendar = function(oID)
   // Find element of Input and place new element before it
   // and make input hidden
   this.date_input = document.getElementById(oID);
+  this.date_input.type = 'hidden';
+  
   this.wrap = document.createElement('div');
   this.date_input.parentNode.insertBefore(this.wrap,this.date_input);
   // Parse value inside of input if exist
@@ -43,6 +45,7 @@ var Calendar = function(oID)
   // build first calendar
   this.calendar_table = '';
   this.generate();
+  this.place_input();
   //this.visible_calendar = new this.generate(this.curr_month, this.curr_year);
 }
 
