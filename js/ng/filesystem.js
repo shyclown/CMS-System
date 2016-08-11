@@ -65,6 +65,7 @@ ngApp.directive('filesystem',['folderService',function(folderService){
     templateUrl: '/templates/directives/filesystem.html',
     link: function(scope){
 
+      console.log(this);
       scope.folders = [];
 
       scope.parent_id = 0;
@@ -156,7 +157,7 @@ ngApp.directive('folder',['folderService','$compile',function(folderService,$com
     {
       scope.isOpen = true;
       scope.nextFolders = scope.folders[scope.folders.indexOf(scope.folder)];
-      console.log(scope.folders);
+      console.log(this);
       scope.toogleIt = function()
       {
         scope.isOpen = !scope.isOpen;
