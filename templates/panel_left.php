@@ -39,7 +39,7 @@
       <li><a href="?page=folders"><i class="fa fa-folder fa-fw"></i>  Folders</a></li>
       <li><a href="?page=login"><i class="fa fa-unlock fa-fw"></i> Login</a></li>
       <li><a href="?page=account"><i class="fa fa-user fa-fw"></i> My Account</a></li>
-
+      <li><a href="?page=new-article"><i class="fa fa-folder fa-fw"></i>  New Article</a></li>
 
     </ul>
   </div>

@@ -2,34 +2,40 @@
 /**
  *
  */
-class ClassName
+class Articles
 {
   private $db;
+  public $errors;
 
   function __construct()
   {
     $this->db = new Database;
+    $this->errors = [];
+    // create tables
+    $this->create_table_el_articles();
   }
 
-  public function create_table_if_not_exists()
+  public function create_table_el_articles()
   {
     $sql = "CREATE TABLE IF NOT EXISTS `el_articles` (
- `id` int(8) NOT NULL AUTO_INCREMENT,
- `header` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
- `content` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
- `state` int(1) NOT NULL,
- `date_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
- `date_edited` datetime NOT NULL,
- PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1";
+            `id` int(8) NOT NULL AUTO_INCREMENT,
+            `header` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+            `content` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+            `state` int(1) NOT NULL,
+            `date_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `date_edited` datetime NOT NULL,
+            PRIMARY KEY (`id`)
+          ) ENGINE=InnoDB
+          DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
     $this->db->query($sql);
   }
 
-  private function is_logged(){
+  public function is_logged_in(){
     if(isset($_SESSION) && isset($_SESSION['user_id'])){
       $this->user_id = $_SESSION['user_id']; return true;
     }
     else {
+      $this->errors[] = 'User is not logged in.';
       return false;
     }
   }
@@ -37,7 +43,7 @@ class ClassName
   // Select Article
   //-----------------------------------------------------
 
-  public function select_articles_of_user($limit_min, $limit_max)
+  public function select_articles_of_user($limit_min = 0, $limit_max = 30)
   {
     $sql = "SELECT *
             FROM user_articles ua
@@ -55,8 +61,9 @@ class ClassName
     $this->db->query($sql,$params);
   }
 
-  public function select_public_articles($limit_min,$limit_max)
+  public function select_public_articles($limit_min = 0, $limit_max = 30)
   {
+    // state 3 will mean public
     $sql = "SELECT * FROM el_articles WHERE state = 3 LIMIT ?,? ";
     $params = array( 'ii', $limit_min, $limit_max );
     $this->db->query($sql,$params);

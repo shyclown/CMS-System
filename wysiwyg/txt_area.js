@@ -1,13 +1,9 @@
-<form name="compForm">
-<input id="manipulate">
-
-</form>
-<script>
 class txtArea{
 
-  constructor(id)
+  constructor(form_id, input_id)
   {
-    this.area_id = id;
+    this.area_id = input_id;
+    this.form_area = document.getElementById(form_id);
     this.btn_wrap;
     this.content_wrap;
 
@@ -109,7 +105,7 @@ class txtArea{
         let tag = selectedElement.tagName;
         let getTag = sValue.toUpperCase();
         let id = selectedElement.parentNode.id;
-        
+
         if(tag == getTag || tag =='LI'){} //do nothingid!='article-content'
         else
         {
@@ -157,11 +153,12 @@ class txtArea{
     }
   }
 
-  generate_buttons(){
+  generate_buttons()
+  {
     var self = this;
     var oPlacement = this.btn_wrap;
 
-    var resource_folder = '/elephant/resources/icons-editor/';
+    var resource_folder = '/icons-editor/';
     var images_class = 'intLink';
 
     var btns = {
@@ -276,11 +273,12 @@ class txtArea{
         el.title = btns[item].nicename;
         el.addEventListener('click',btns[item].btn_event,false);
       }
-      document.compForm.addEventListener('submit',function(){
-        //event.preventDefault();
-        if(self.validateMode())
+      self.form_area.addEventListener('submit',function(){
+      // event.preventDefault();
+        if(self.validate_mode())
         {
-          this.content.value=self.oDoc.innerHTML;
+          // this => form_area
+          this.content.value=self.content_wrap.innerHTML;
           return true;
         }
         return false;
@@ -289,7 +287,3 @@ class txtArea{
     populate();
   }
 }
-new txtArea('manipulate');
-
-
-</script>
