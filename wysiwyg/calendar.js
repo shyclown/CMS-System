@@ -11,7 +11,7 @@ var Calendar = function(oID)
   // and make input hidden
   this.date_input = document.getElementById(oID);
   this.date_input.type = 'hidden';
-  
+
   this.wrap = document.createElement('div');
   this.date_input.parentNode.insertBefore(this.wrap,this.date_input);
   // Parse value inside of input if exist
@@ -188,7 +188,7 @@ Calendar.prototype.build = function()
 
   // fill in daynames
   var funk = this.day_name.bind(this);
-  console.log(this.startingDay);
+  //console.log(this.startingDay);
 
   for(var i = 0; i <= 6; i++){ var el = new this.day_name(i, daynames_wrap, calendar);  }
   // set first number to be 1
