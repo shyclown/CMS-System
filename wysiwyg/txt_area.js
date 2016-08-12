@@ -120,9 +120,6 @@ class txtArea{
     var stringBefore = anchorParent.innerHTML.substr(0,elSelection.anchorOffset);
     var stringAfter = focusParent.innerHTML.substr(elSelection.focusOffset);;
 
-    console.log(stringBefore);
-    console.log(stringAfter);
-
     var inOneNode = (anchorParent === focusParent);
 
     var anchorParentTag = anchorParent.tagName;
@@ -132,13 +129,23 @@ class txtArea{
 
     var div = this._el('div');
     div.className = 'code';
-    div.innerHTML = strSelection;
+    //div.innerHTML = strSelection;
+    var range;
+    var range_cont;
+    var cont;
 
     if (elSelection.rangeCount) {
-      var range = elSelection.getRangeAt(0);//.cloneRange();
+      range = elSelection.getRangeAt(0);//.cloneRange();
+      range_cont = range.extractContents();
       range.deleteContents();
       range.insertNode(div);
     }
+
+    div.appendChild(range_cont);
+    cont = div.innerHTML;
+    cont = '<div class="code_line">'+cont.split('<br>').join('</div><div class="code_line">')+'</div>';
+    div.innerHTML = cont;
+
 /*
     var realContent = elSelection.getRangeAt(0).extractContents();
     var temp = this._el('span');
