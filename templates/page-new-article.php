@@ -50,6 +50,7 @@ form.el-article input[type='text']{
 }
 .el_cont_area div.code{
   padding: 16px;
+  margin: 16px 0px;
   background-color: #EAEAEA;
   font-size: 14px;
   font-family: monospace;

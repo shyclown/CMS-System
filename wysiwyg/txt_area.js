@@ -78,27 +78,7 @@ class txtArea{
 
   format_doc(sCmd, sValue){
     if (this.validate_mode())
-    {/*
-      if(sValue=="CODE")
-      {
-        var range = document.getSelection();
-        selectedElement = document.getSelection().anchorNode.parentElement;
-        var selection =  selectedElement.innerHTML;
-        var code = document.createElement("CODE");
-        code.innerHTML = selection;
-        tag = selectedElement.tagName;
-        getTag = sValue.toUpperCase();
-
-        if(tag == 'CODE' || tag =='LI' || tag == 'H3' || tag == 'H2'){} //do nothing
-        else if(tag == 'P'){
-          selectedElement.innerHTML = '';
-          selectedElement.appendChild(code);
-        }
-        else{
-          selectedElement.parentElement.insertBefore(code, selectedElement);
-          selectedElement.parentElement.removeChild(selectedElement);
-        }
-      }*/
+    {
       var range = document.getSelection();
       var selectedElement = document.getSelection().anchorNode.parentElement;
 
@@ -124,27 +104,54 @@ class txtArea{
   {
     //later check
     var selectedElement = document.getSelection().anchorNode.parentElement;
-    console.log(selectedElement);
     var wraper = selectedElement.parentElement;
     var tag = selectedElement.tagName;
 
     if( selectedElement.className == "code_line" ){}
-    else{
-      this.format_doc('removeFormat');
-      this.format_doc('formatblock','p');
-
+    else
+    {
     var elContent = selectedElement.innerHTML;
     var elSelection = document.getSelection();
+
+    var anchorParent = elSelection.anchorNode.parentNode;
+    var focusParent = elSelection.focusNode.parentNode;
+
+
+    var stringBefore = anchorParent.innerHTML.substr(0,elSelection.anchorOffset);
+    var stringAfter = focusParent.innerHTML.substr(elSelection.focusOffset);;
+
+    console.log(stringBefore);
+    console.log(stringAfter);
+
+    var inOneNode = (anchorParent === focusParent);
+
+    var anchorParentTag = anchorParent.tagName;
+    var focusParentTag = focusParent.tagName;
+
+    var strSelection = elSelection.toString();
+
+    var div = this._el('div');
+    div.className = 'code';
+    div.innerHTML = strSelection;
+
+    if (elSelection.rangeCount) {
+      var range = elSelection.getRangeAt(0);//.cloneRange();
+      range.deleteContents();
+      range.insertNode(div);
+    }
+/*
     var realContent = elSelection.getRangeAt(0).extractContents();
     var temp = this._el('span');
-    temp.appendChild(realContent)
+    temp.appendChild(realContent);
     var content = temp.innerHTML;
-    console.log(temp);
+
+
     //there is problem when no <br>;
     var newContent = '<div class="code_line">'+content.split('<br>').join('</div><div class="code_line">')+'</div>';
 
+
     this.format_doc('insertHTML','<div class="code">'+newContent+'</div>');
-    }
+    */}
   }
   remove_format()
   {
