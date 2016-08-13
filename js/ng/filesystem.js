@@ -170,12 +170,15 @@ ngApp.directive('folder',['folderService','$compile',function(folderService,$com
           console.log('folder was removed');
         }
         var index = scope.folders.indexOf(scope.folder);
-        var children = scope.folder.child_folders;
-        if(children.length > 0)
+        var children;
+        if(children = scope.folder.child_folders)
         {
-          for( var i = 0; i < children.length; i++ )
+          if(children.length > 0)
           {
-            scope.mainFolders.push(children[i]);
+            for( var i = 0; i < children.length; i++ )
+            {
+              scope.mainFolders.push(children[i]);
+            }
           }
         }
         scope.folders.splice(index, 1);

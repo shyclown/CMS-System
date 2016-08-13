@@ -29,10 +29,100 @@ class txtArea{
     this.generate_buttons();
     this.create_content_wrap();
 
+    // UPDATE ON KEY
+    this.content_wrap.addEventListener('input',this.inputEv.bind(this),false);
+    this.content_wrap.addEventListener('mouseup',this.mouseEv.bind(this),false);
+      this.content_wrap.addEventListener('keydown',this.update.bind(this),false);
+    this.content_wrap.addEventListener('cut',this.update.bind(this),false);
+    this.content_wrap.addEventListener('paste',this.update.bind(this),false);
+    this.content_wrap.addEventListener('copy',this.update.bind(this),false);
+
     this.create_html_switch_wrap();
     this.generate_html_switch();
   }
 
+  getParent_byClass(oElement,oClass){
+    if(oElement.parentNode.className != oClass){
+      this.getParent_byClass(oElement.parentNode, oClass);
+    }else{
+      return oElement.parentNode;
+    }
+  }
+
+
+  inputEv(){
+
+
+  }
+  mouseEv(){
+
+    var selection = document.getSelection();
+    var range = selection.getRangeAt(0);
+
+
+        var s = selection;
+
+           for(var i = 0; i < s.rangeCount; i++)
+           {
+             console.log(s.getRangeAt(i));
+           }
+
+
+    if(range.startContainer.parentNode.className == 'code_line'){
+
+      range.setStartAfter(range.startContainer.parentNode.parentNode);
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+    }
+    if(range.endContainer.parentNode.className == 'code_line'){
+
+      range.setEndBefore(range.endContainer.parentNode.parentNode);
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+    }
+
+
+  }
+  update(){
+
+    // ISSUE
+    // Cut and delete events if focusNode is in code
+    // it jumps to up to node above with style of own node
+    // - selection from bottom : causes white span line in code area
+    // - selection from top moves code styled line outside of code area
+
+
+    var selection = document.getSelection();
+    var range = selection.getRangeAt(0);
+    var anchor = selection.anchorNode.parentNode;
+    var focus = selection.focusNode.parentNode;
+
+    // issue handling
+    // focus node in code (jumps out)
+
+    if(anchor.className == 'code_line' || focus.className == 'code_line')
+    {
+      var code;
+      if(anchor.className == 'code_line'){ code = this.getParent_byClass(anchor,'code'); }
+      else if(focus.className == 'code_line'){ code = this.getParent_byClass(focus,'code'); }
+
+    }
+
+
+    if(event.type == 'cut'){
+        var content = range.extractContents();// console.log(content);//
+     }
+    else if(event.type == 'copy'){ console.log('copy'); }
+    else if(event.type == 'paste')
+    {
+      //console.log(range);
+      let clipboardData = event.clipboardData || window.clipboardData;
+      let pasteData = clipboardData.getData('Text');
+    //  console.log(pasteData);
+    }
+  }
   hide_textarea(){
     this._(this.area_id).type = 'hidden';
   }
@@ -107,68 +197,111 @@ class txtArea{
     var wraper = selectedElement.parentElement;
     var tag = selectedElement.tagName;
 
-    if( selectedElement.className == "code_line" ){}
-    else
-    {
-    var elContent = selectedElement.innerHTML;
+
+    // always to be placed in root element
+    // place in front of focusElement
+    var root = this.content_wrap;
+
     var elSelection = document.getSelection();
 
     var anchorParent = elSelection.anchorNode.parentNode;
     var focusParent = elSelection.focusNode.parentNode;
 
+    if(anchorParent.parentNode === focusParent.parentNode && focusParent.parentNode.className == 'code'){}
+    else
+    {
+      var stringBefore = anchorParent.innerHTML.substr(0,elSelection.anchorOffset);
+      var stringAfter = focusParent.innerHTML.substr(elSelection.focusOffset);;
 
-    var stringBefore = anchorParent.innerHTML.substr(0,elSelection.anchorOffset);
-    var stringAfter = focusParent.innerHTML.substr(elSelection.focusOffset);;
+      var inOneNode = (anchorParent === focusParent);
 
-    var inOneNode = (anchorParent === focusParent);
+      var anchorParentTag = anchorParent.tagName;
+      var focusParentTag = focusParent.tagName;
 
-    var anchorParentTag = anchorParent.tagName;
-    var focusParentTag = focusParent.tagName;
+      var strSelection = elSelection.toString();
 
-    var strSelection = elSelection.toString();
+      var tempDiv = this._el('code');
+      //div.innerHTML = strSelection;
+      var range;
+      var range_cont;
+      var cont;
 
-    var div = this._el('div');
-    div.className = 'code';
-    //div.innerHTML = strSelection;
-    var range;
-    var range_cont;
-    var cont;
+      if (elSelection.rangeCount) {
+        range = elSelection.getRangeAt(0);//.cloneRange();
+        range_cont = range.extractContents();
+      }
 
-    if (elSelection.rangeCount) {
-      range = elSelection.getRangeAt(0);//.cloneRange();
-      range_cont = range.extractContents();
+      tempDiv.appendChild(range_cont);
+
+      var text = this.getTextData(tempDiv);
+      // replace content
+      var newDiv = this._el('code');
+      newDiv.className = 'code';
+    //  newDiv.contentEditable = 'false';
+    //  newDiv.classList.add('unselectable');
+      newDiv.dragable = 'true';
+      if(text.length == 0)
+      {
+        var codeLine = this._el('div');
+        codeLine.className = 'code_line';
+        codeLine.innerHTML = 'write your code here...';
+        newDiv.appendChild(codeLine);
+      }
+      else
+      {
+        for( var i = 0, len = text.length; i < len ; i++)
+        {
+          var codeLine = this._el('div');
+          codeLine.className = 'code_line';
+          codeLine.innerHTML = text[i];
+          newDiv.appendChild(codeLine);
+        }
+      }
+
       range.deleteContents();
-      range.insertNode(div);
+
+
+      if(anchorParent.className == "code_line" || focusParent.className == "code_line")
+      {
+        range.insertNode(newDiv);
+        //console.log(focusParent);
+        //root.insertBefore(newDiv, focusParent.parentNode);
+      }
+      else {
+      range.insertNode(newDiv);
+      }
     }
-
-    div.appendChild(range_cont);
-    cont = div.innerHTML;
-    cont = '<div class="code_line">'+cont.split('<br>').join('</div><div class="code_line">')+'</div>';
-    div.innerHTML = cont;
-
-/*
-    var realContent = elSelection.getRangeAt(0).extractContents();
-    var temp = this._el('span');
-    temp.appendChild(realContent);
-    var content = temp.innerHTML;
-
-
-    //there is problem when no <br>;
-    var newContent = '<div class="code_line">'+content.split('<br>').join('</div><div class="code_line">')+'</div>';
-
-
-    this.format_doc('insertHTML','<div class="code">'+newContent+'</div>');
-    */}
   }
+  getTextData(element){
+    var nodes = [];
+    function getTextNodes( node ){
+      if( node.nodeType === 3 ) {
+        if(!node.textContent == '')
+        {
+        nodes.push(node.textContent);
+        }
+      }else{
+        for ( var i = 0, len = node.childNodes.length; i < len ; i++){
+          getTextNodes( node.childNodes[i] );
+        }
+      }
+    }
+    getTextNodes( element );
+    return nodes;
+  }
+
   remove_format()
   {
     // because of DIV - CODE element
     var selectedElement = document.getSelection().anchorNode.parentElement;
     var tag = selectedElement.tagName;
     var wraper = selectedElement.parentElement;
+    var wraperClass = wraper.className
+    console.log(wraper);
 
-    if (wraper.className == 'code')
+    if (wraperClass == 'code' || wraperClass == 'code_line')
     {
+      if(wraperClass == 'code_line'){ wraper = wraper.parentElement; }
         var newContent = '';
 
         if(wraper.hasChildNodes())

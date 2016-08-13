@@ -48,18 +48,30 @@ form.el-article input[type='text']{
   outline: 1px solid #E0E0E0;
   min-height: 240px;
 }
-.el_cont_area div.code{
+.el_cont_area code.code{
+  display: block;
   padding: 16px;
   margin: 16px 0px;
   background-color: #EAEAEA;
   font-size: 14px;
   font-family: monospace;
+  overflow-x: scroll;
+  white-space: nowrap;
 }
-.el_cont_area div.code div:nth-child(even){
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+.el_cont_area code.code div:nth-child(even){
   padding: 1px;
   background-color: #EAEAEA;
 }
-.el_cont_area div.code div:nth-child(odd){
+.el_cont_area code.code div:nth-child(odd){
     padding: 1px;
   background-color: #E0E0E0;
 }
