@@ -95,7 +95,7 @@ form.el-article input[type='text']{
       </p>
       <p>
       <label for="content">Content:</label>
-      <input id="manipulate" name="content" type="text" placeholder="Content" autocomplete="false" value="<div>New Content</div>" />
+      <input id="manipulate" name="content" type="text" placeholder="Content" autocomplete="false" value="<div>New Content</div><div>Test</div><div>Another Test</div>" />
       </p>
   </div>
 

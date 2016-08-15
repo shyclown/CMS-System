@@ -9,6 +9,7 @@ All CSS files from folder are loaded
 <?php
 foreach (glob("style/*.css") as $filename){ echo '<link href="'.$filename.'" rel="stylesheet">';}
 ?>
+<script src="/js/fn.js"></script>
 <!-- Angular JS -->
 <script src="/js/angular/angular.min.js"></script>
 <script src="/js/angular/angular-sanitize.min.js"></script>

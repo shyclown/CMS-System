@@ -30,9 +30,9 @@ class txtArea{
     this.create_content_wrap();
 
     // UPDATE ON KEY
-    this.content_wrap.addEventListener('input',this.inputEv.bind(this),false);
+    //this.content_wrap.addEventListener('input',this.inputEv.bind(this),false);
     this.content_wrap.addEventListener('mouseup',this.mouseEv.bind(this),false);
-      this.content_wrap.addEventListener('keydown',this.update.bind(this),false);
+      this.content_wrap.addEventListener('keydown',this.oKeyEvents.bind(this),false);
     this.content_wrap.addEventListener('cut',this.update.bind(this),false);
     this.content_wrap.addEventListener('paste',this.update.bind(this),false);
     this.content_wrap.addEventListener('copy',this.update.bind(this),false);
@@ -49,50 +49,53 @@ class txtArea{
     }
   }
 
+oKeyEvents(){
+  console.log('hey');
+  console.log(event);
+  if(event.keyCode == 8 || event.keyCode == 46)
+  {
+    var oSelection = window.getSelection();
 
+    if(!oSelection.isCollapsed)
+    {
+      event.preventDefault();
+      deleteRangeElements(oSelection,this.content_wrap);
+    }
+    else if( oSelection.focusOffset == 0 )
+    {
+      event.preventDefault();
+      var currentNode = getParentInRoot(oSelection.focusNode, this.content_wrap);
+      var prevNode = currentNode.previousSibling;
+      console.log(prevNode);
+      var prevText = this.getTextData(prevNode)[0];
+      //var prevTextLength = prevText.length - 1;
+      //console.log(prevTextLength)
+
+      var range = document.createRange();
+      console.log(prevText);
+      //range.setStart(prevNode, prevTextLength);
+      range.setStart(prevNode, 1);
+      range.collapse(true);
+      oSelection.removeAllRanges();
+      oSelection.addRange(range);
+
+    }
+  }
+}
   inputEv(){
+    console.log(event);
 
 
   }
   mouseEv(){
-
     var selection = document.getSelection();
     var range = selection.getRangeAt(0);
-
-
-        var s = selection;
-
-           for(var i = 0; i < s.rangeCount; i++)
-           {
-             console.log(s.getRangeAt(i));
-           }
-
-
-    if(range.startContainer.parentNode.className == 'code_line'){
-
-      range.setStartAfter(range.startContainer.parentNode.parentNode);
-      selection.removeAllRanges();
-      selection.addRange(range);
-
-    }
-    if(range.endContainer.parentNode.className == 'code_line'){
-
-      range.setEndBefore(range.endContainer.parentNode.parentNode);
-      selection.removeAllRanges();
-      selection.addRange(range);
-
-    }
-
+    console.log(range.startContainer.length);
+    console.log(range.startOffset);
+    console.log(range.endOffset);
 
   }
   update(){
-
-    // ISSUE
-    // Cut and delete events if focusNode is in code
-    // it jumps to up to node above with style of own node
-    // - selection from bottom : causes white span line in code area
-    // - selection from top moves code styled line outside of code area
-
 
     var selection = document.getSelection();
     var range = selection.getRangeAt(0);
@@ -123,6 +126,7 @@ class txtArea{
     //  console.log(pasteData);
     }
   }
+
   hide_textarea(){
     this._(this.area_id).type = 'hidden';
   }
@@ -257,21 +261,107 @@ class txtArea{
           newDiv.appendChild(codeLine);
         }
       }
+      console.log(elSelection);
+      console.log(elSelection.anchorNode);
 
-      range.deleteContents();
+      var startNode = getParentInRoot( elSelection.anchorNode, this.content_wrap );
+      console.log( startNode );
+      var endNode = getParentInRoot( elSelection.focusNode, this.content_wrap );
+      console.log( endNode );
+      deleteRangeElements( elSelection, this.content_wrap );
 
+      this.content_wrap.insertBefore( newDiv, endNode );
 
-      if(anchorParent.className == "code_line" || focusParent.className == "code_line")
-      {
-        range.insertNode(newDiv);
-        //console.log(focusParent);
-        //root.insertBefore(newDiv, focusParent.parentNode);
-      }
-      else {
-      range.insertNode(newDiv);
-      }
     }
   }
+  // returns array of ranges
+  splitRange(range)
+  {
+    var self = this;
+    var range = range;
+
+    var oRanges = [];
+    var start_element = getParentInRoot(range.startContainer, self.content_wrap);
+    var end_element = getParentInRoot(range.endContainer, self.content_wrap);
+
+    var oExcluded = ['code'];
+
+
+    var isExcluded = function(oElement)
+    {
+      if(!oElement.className){ return false;}
+      else{
+        var oClass = oElement.className;
+        return inArray(oExcluded, oElement.className);
+      }
+    }
+
+    var getRanges = function()
+    {
+      var rangeContinues = true;
+      var cutNeeded = false;
+
+
+      function cutRange(oElement)
+      {
+        if(isExcluded(oElement))
+        {
+          if(oElement == start_element){
+            rangeContinues = false;
+            range.setStartAfter(oElement);
+          }
+          else if(oElement == end_element)
+          {
+            if(rangeContinues){
+              range.setEndBefore(oElement);
+              oRanges.push(range);
+            }
+            else{
+              // previous element was not in range
+              // doing nothing
+            }
+          }
+          else
+          {
+            cutNeeded = true;
+            if(rangeContinues){
+              var new_range = range.cloneRange();
+              new_range.setEndBefore(oElement);
+              oRanges.push(new_range);
+              range.setStartAfter(oElement);
+            }
+            else{
+              // previous element was not in range,
+              // move start after this element
+              range.setStartAfter(oElement);
+            }
+          }
+        }
+        else
+        {
+          if(oElement == end_element){
+            oRanges.push(range);
+          }
+          // element can be deleted - stays in Range;
+          rangeContinues = true;
+        }
+      }
+
+      // getElements
+      var oElements = getElementsInSelection(range, self.content_wrap);
+      console.log(oElements);
+      var nrElements = oElements.length;
+      var i = 0;
+      while( i < nrElements ){
+        cutRange(oElements[i]);
+        i++;
+      }
+    }
+
+    getRanges();
+    return oRanges;
+  }
+
   getTextData(element){
     var nodes = [];
     function getTextNodes( node ){
@@ -456,7 +546,7 @@ class txtArea{
       Code: {
         nicename:'Code',
         fname:'code_icon.png',
-        btn_event: function(){self.make_code_tag();}
+        btn_event: function(){ self.make_code_tag();}
       },
       Print: {
         nicename:'Print',
