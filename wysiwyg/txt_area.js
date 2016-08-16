@@ -50,9 +50,9 @@ class txtArea{
   }
 
 oKeyEvents(){
-  console.log('hey');
-  console.log(event);
-  if(event.keyCode == 8 || event.keyCode == 46)
+  var s = window.getSelection().anchorNode;
+
+  if(event.keyCode == 8)// || event.keyCode == 46)
   {
     var oSelection = window.getSelection();
 
@@ -64,36 +64,63 @@ oKeyEvents(){
     else if( oSelection.focusOffset == 0 )
     {
       event.preventDefault();
-      var currentNode = getParentInRoot(oSelection.focusNode, this.content_wrap);
-      var prevNode = currentNode.previousSibling;
-      console.log(prevNode);
-      var prevText = this.getTextData(prevNode)[0];
-      //var prevTextLength = prevText.length - 1;
-      //console.log(prevTextLength)
+      //var currentNode = getParentInRoot(oSelection.focusNode, this.content_wrap);
+      var currentNode = oSelection.focusNode;
+      var prevText = getPreviousTextSibling(oSelection.focusNode,this.content_wrap);
 
-      var range = document.createRange();
       console.log(prevText);
-      //range.setStart(prevNode, prevTextLength);
-      range.setStart(prevNode, 1);
-      range.collapse(true);
-      oSelection.removeAllRanges();
-      oSelection.addRange(range);
+      if(prevText)
+      {
+        var prevNode = prevText.parentNode;
+        var range = document.createRange();
 
+        // remove node if no more text is in it
+        if(this.getTextData(currentNode).length == 0)
+        {
+          currentNode.parentNode.removeChild(currentNode);
+        }
+
+        range.setStart(prevText, prevText.length);
+        range.collapse(true);
+        oSelection.removeAllRanges();
+        oSelection.addRange(range);
+      }
+      else
+      {
+        var currentRootNode = getParentInRoot(currentNode,this.content_wrap);
+        console.dir(currentRootNode);
+        var currentTextData = this.getTextData(currentNode);
+
+        if(currentRootNode.tagName.toLowerCase() != 'p' && currentTextData.length != 0){
+          var newElement = this._el('p');
+          this.content_wrap.insertBefore(newElement,currentRootNode);
+          newElement.appendChild(currentNode);
+
+          var range = document.createRange();
+          var movedText = getLastTextNode(newElement);
+          range.setStart(movedText, 0);
+          range.collapse(true);
+          oSelection.removeAllRanges();
+          oSelection.addRange(range);
+
+          console.log(hasTextInside(currentRootNode));
+          console.log('root top with P creation');
+        }
+        else{
+          console.log(hasTextInside(currentRootNode));
+          console.log('root top without P creation');
+        }
+
+      }
     }
   }
 }
   inputEv(){
-    console.log(event);
-
 
   }
   mouseEv(){
     var selection = document.getSelection();
     var range = selection.getRangeAt(0);
-    console.log(range.startContainer.length);
-    console.log(range.startOffset);
-    console.log(range.endOffset);
-
   }
   update(){
 
@@ -362,9 +389,12 @@ oKeyEvents(){
     return oRanges;
   }
 
-  getTextData(element){
+  getTextData(oElement)
+  {
     var nodes = [];
-    function getTextNodes( node ){
+
+    function getTextNodes( node )
+    {
       if( node.nodeType === 3 ) {
         if(!node.textContent == '')
         {
@@ -376,7 +406,7 @@ oKeyEvents(){
         }
       }
     }
-    getTextNodes( element );
+    getTextNodes( oElement );
     return nodes;
   }
 

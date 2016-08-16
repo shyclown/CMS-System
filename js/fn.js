@@ -74,26 +74,80 @@ var deleteFocusRange = function( oElement,oOffset ){
   range.deleteContents();
 }
 
+var getPreviousTextSibling = function(oElement,oRoot)
+{
+  var oElement = oElement;
+  while(oElement.previousSibling == null && oRoot.firstChild != oElement){
+    oElement = oElement.parentNode;
+  }
+  if(oRoot.firstChild == oElement){ return false; }
+  return getLastTextNode(oElement.previousSibling);
+}
+
+var getFirstTextNode = function(oElement){
+  while(oElement.firstChild != null){
+    oElement = oElement.firstChild;
+  }
+  return oElement;
+}
+var getLastTextNode = function(oElement){
+  while(oElement.lastChild != null){
+    oElement = oElement.lastChild;
+  }
+  return oElement;
+}
+
+var getParentOfEmpty = function(oElement){
+
+}
+
+// return: BOOL
+var hasTextInside = function(oElement){
+  var foundText = false;
+
+  function findText( node ){
+    if( node.nodeType === 3 ) {
+      if( !node.textContent == ''){ foundText = true; }
+    }
+    else{
+      var oChildren = node.childNodes;
+      var nrChildren = oChildren.length;
+      var i = 0;
+      while( !foundText && i < nrChildren ){
+        findText( oChildren[i] );
+      }
+    }
+  }
+  findText(oElement); return foundText;
+}
+
 var deleteRangeElements = function(oSelection,oRoot)
 {
   var oRange = oSelection.getRangeAt(0);
-  var oElements = getElementsInSelection(oRange,oRoot);
 
-  for( var i = 0, len = oElements.length; i < len ; i++ )
+  if(oRange.startContainer == oRange.endContainer){
+    oRange.deleteContents();
+  }
+  else
   {
-    var oElement = oElements[i];
-    if( oElement.className && oElement.className == 'code'){ }
-    else
+    var oElements = getElementsInSelection(oRange,oRoot);
+
+    for( var i = 0, len = oElements.length; i < len ; i++ )
     {
-      if( i == 0 ){
-        deleteAnchorRange(oRange.startContainer, oRange.startOffset);
-      }
-      else if( i == oElements.length - 1 ){
-        deleteFocusRange(oRange.endContainer, oRange.endOffset);
-      }
-      else{
-        // remove whole element
-        oRoot.removeChild(oElement);
+      var oElement = oElements[i];
+      if( oElement.className && oElement.className == 'code'){ }
+      else
+      {
+        if( i == 0 ){
+          deleteAnchorRange(oRange.startContainer, oRange.startOffset);
+        }
+        else if( i == oElements.length - 1 ){
+          deleteFocusRange(oRange.endContainer, oRange.endOffset);
+        }
+        else{
+          // remove whole element
+          oRoot.removeChild(oElement);
+        }
       }
     }
   }
