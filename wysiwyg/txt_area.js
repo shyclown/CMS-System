@@ -49,18 +49,69 @@ class txtArea{
     }
   }
 
-oKeyEvents(){
-  var s = window.getSelection().anchorNode;
+oKeyEvents()
+{
+  var oSelection = window.getSelection();
+  var oRoot = this.content_wrap;
 
-  if(event.keyCode == 8)// || event.keyCode == 46)
+
+  // DELETE
+  if(event.keyCode == 46)
   {
-    var oSelection = window.getSelection();
-
     if(!oSelection.isCollapsed)
     {
       event.preventDefault();
-      deleteRangeElements(oSelection,this.content_wrap);
+      deleteRangeElements(oSelection, oRoot)
     }
+  // Detect end of element
+    else if( oSelection.focusOffset == oSelection.focusNode.length )
+    {
+      event.preventDefault();
+      var oNode = oSelection.focusNode;
+      // grab next node text content and move to same line
+      if(oNode.nextSibling != null && isOfTag(oNode.nextSibling, 'br'))
+      {
+        removeElement(oNode.nextSibling);
+      }
+      else
+      {
+        var nextTextNode = getNextTextSibling( oNode, oRoot);
+        if( nextTextNode )
+        {
+          var oPosition = oNode.length;
+          oNode.textContent += nextTextNode.textContent;
+          var range = document.createRange();
+          range.setStart(oNode, oPosition);
+          range.collapse(true);
+          oSelection.removeAllRanges();
+          oSelection.addRange(range);
+          if(hasDirectSiblingOfTag(nextTextNode,'br'))
+          {
+            removeNextSibling(nextTextNode);
+          }
+          // todo remove empty tags above
+          var storedParent = nextTextNode.parentNode;
+          removeElement(nextTextNode);
+          // check parent
+          var emptyParent = getTopEmpty(storedParent,oRoot);
+          if(emptyParent)
+          {
+            removeElement(emptyParent);
+          }
+        }
+      }
+    }
+  }
+  // BACKSPACE
+  if(event.keyCode == 8)
+  {
+    // override default delete of Selection for correct removal of custom tags
+    if(!oSelection.isCollapsed)
+    {
+      event.preventDefault();
+      deleteRangeElements(oSelection, oRoot);
+    }
+    // Detect begginning of the element
     else if( oSelection.focusOffset == 0 )
     {
       event.preventDefault();
