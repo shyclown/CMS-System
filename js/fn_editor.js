@@ -127,7 +127,8 @@ var getTopEmpty = function(oElement,oRoot)
 }
 
 var getParentInRoot = function(oElement,oRoot){
-  while(oElement.parentNode != oRoot ){
+  while(oElement.parentNode != oRoot )
+  {
     oElement = oElement.parentNode;
   }
   return oElement;

@@ -32,7 +32,7 @@ class txtArea{
     // UPDATE ON KEY
     //this.content_wrap.addEventListener('input',this.inputEv.bind(this),false);
     this.content_wrap.addEventListener('mouseup',this.mouseEv.bind(this),false);
-      this.content_wrap.addEventListener('keydown',this.oKeyEvents.bind(this),false);
+    this.content_wrap.addEventListener('keydown',this.oKeyEvents.bind(this),false);
     this.content_wrap.addEventListener('cut',this.update.bind(this),false);
     this.content_wrap.addEventListener('paste',this.update.bind(this),false);
     this.content_wrap.addEventListener('copy',this.update.bind(this),false);
