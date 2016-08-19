@@ -80,11 +80,8 @@ oKeyEvents()
         {
           var oPosition = oNode.length;
           oNode.textContent += nextTextNode.textContent;
-          var range = document.createRange();
-          range.setStart(oNode, oPosition);
-          range.collapse(true);
-          oSelection.removeAllRanges();
-          oSelection.addRange(range);
+          newCaretPosition(oSelection , oNode , oPosition);
+
           if(hasDirectSiblingOfTag(nextTextNode,'br'))
           {
             removeNextSibling(nextTextNode);
@@ -123,18 +120,12 @@ oKeyEvents()
       if(prevText)
       {
         var prevNode = prevText.parentNode;
-        var range = document.createRange();
-
         // remove node if no more text is in it
         if(this.getTextData(currentNode).length == 0)
         {
           currentNode.parentNode.removeChild(currentNode);
         }
-
-        range.setStart(prevText, prevText.length);
-        range.collapse(true);
-        oSelection.removeAllRanges();
-        oSelection.addRange(range);
+        newCaretPosition(oSelection, prevText, prevText.length);
       }
       else
       {
@@ -147,12 +138,8 @@ oKeyEvents()
           this.content_wrap.insertBefore(newElement,currentRootNode);
           newElement.appendChild(currentNode);
 
-          var range = document.createRange();
           var movedText = getLastTextNode(newElement);
-          range.setStart(movedText, 0);
-          range.collapse(true);
-          oSelection.removeAllRanges();
-          oSelection.addRange(range);
+          newCaretPosition(oSelection, movedText, 0);
 
           console.log(hasTextInside(currentRootNode));
           console.log('root top with P creation');
@@ -272,6 +259,7 @@ oKeyEvents()
       }
     }
   }
+
   make_code_tag()
   {
     //later check

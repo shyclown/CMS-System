@@ -100,6 +100,14 @@ var isOfTag = function( oElement , oTagName){
 }
 var isTextNode = function(oElement){  return (oElement.nodeType == 3); }
 
+var newCaretPosition = function(oSelection, oElement, oOffset)
+{
+  var range = document.createRange();
+  range.setStart(oElement, oOffset);
+  range.collapse(true);
+  oSelection.removeAllRanges();
+  oSelection.addRange(range);
+}
 //
 var getTopEmpty = function(oElement,oRoot)
 {
