@@ -49,6 +49,7 @@ class txtArea{
     }
   }
 
+
 oKeyEvents()
 {
   var oSelection = window.getSelection();
@@ -99,7 +100,8 @@ oKeyEvents()
       }
     }
   }
-  // BACKSPACE
+  // BACKSPACE //
+  // check for links //
   if(event.keyCode == 8)
   {
     // override default delete of Selection for correct removal of custom tags
@@ -148,11 +150,11 @@ oKeyEvents()
           console.log(hasTextInside(currentRootNode));
           console.log('root top without P creation');
         }
-
       }
-    }
-  }
-}
+    } // end of : on begginning of an textElement
+  } // end of BACKSPACE : if(event.keyCode == 8)
+} // end of oKeyEvents();
+
   inputEv(){
 
   }

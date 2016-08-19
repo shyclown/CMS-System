@@ -2,6 +2,14 @@
 * Text Editor
 * v. 0.01
 */
+var removeElement = function(oElement){
+  oElement.parentNode.removeChild(oElement);
+}
+
+var removeNextSibling = function(oElement){
+  oElement.parentNode.removeChild(oElement.nextSibling);
+}
+
 var getFirstTextNode = function(oElement){
   while(oElement.firstChild != null){  oElement = oElement.firstChild; }
   return oElement;
@@ -12,18 +20,23 @@ var getLastTextNode = function(oElement){
   return oElement;
 }
 
-var deleteAnchorRange = function( oElement,oOffset ){
+var deleteAnchorRange = function(oElement, oOffset){
+  deleteRange( oElement, oOffset , oElement , oElement.length );
+}
+
+var deleteFocusRange = function(oElement, oOffset){
+  deleteRange( oElement, 0 , oElement , oOffset );
+}
+
+var deleteRange = function(oStart, oEnd, oStartOffset, oEndOffset){
   var range = document.createRange();
-  range.setStart(oElement, oOffset);
-  range.setEnd(oElement, oElement.length);
+  range.setStart(oStart, oStartOffset);
+  range.setEnd(oEnd, oEndOffset);
   range.deleteContents();
 }
 
-var deleteFocusRange = function( oElement,oOffset ){
-  var range = document.createRange();
-  range.setStart(oElement, 0);
-  range.setEnd(oElement, oOffset);
-  range.deleteContents();
+var isTextNode = function(oElement){
+  return (oElement.nodeType == 3);
 }
 
 var hasTextInside = function(oElement)
@@ -65,7 +78,6 @@ var getPreviousTextSibling = function(oElement,oRoot)
   return getLastTextNode(oElement.previousSibling);
 }
 
-
 var getNextTextSibling = function(oElement, oRoot)
 {
     var oElement = oElement;
@@ -73,16 +85,7 @@ var getNextTextSibling = function(oElement, oRoot)
       oElement = oElement.parentNode;
     }
     if(oRoot.lastChild == oElement){ return false; }
-    var textElement = getFirstTextNode(oElement.nextSibling);
-    return textElement;
-}
-
-
-var removeElement = function(oElement){
-  oElement.parentNode.removeChild(oElement);
-}
-var removeNextSibling = function(oElement){
-  oElement.parentNode.removeChild(oElement.nextSibling);
+    return getFirstTextNode(oElement.nextSibling);
 }
 
 var hasDirectSiblingOfTag= function(oElement, oTagName){
@@ -91,14 +94,14 @@ var hasDirectSiblingOfTag= function(oElement, oTagName){
   else
   { return false; }
 }
-var isOfTag = function( oElement , oTagName){
+var isOfTag = function(oElement , oTagName){
   if( !isTextNode(oElement) &&
       oElement.tagName.toUpperCase() == oTagName.toUpperCase())
   { return true; }
   else
   { return false; }
 }
-var isTextNode = function(oElement){  return (oElement.nodeType == 3); }
+
 
 var newCaretPosition = function(oSelection, oElement, oOffset)
 {
@@ -109,22 +112,17 @@ var newCaretPosition = function(oSelection, oElement, oOffset)
   oSelection.addRange(range);
 }
 //
+
 var getTopEmpty = function(oElement,oRoot)
 {
-  var oFound = false;
+  var elementFound = false;
   var oParent = oElement;
-
-  while(oFound == false && oParent != oRoot)
+  while(elementFound == false && oParent != oRoot)
   {
-    if(!hasTextInside(oParent.parentNode))
-    {
-      oParent = oParent.parentNode;
-    }
-    else{
-      oFound = true; // do not change parent
-    }
+    if(!hasTextInside(oParent.parentNode)){  oParent = oParent.parentNode; }
+    else{ elementFound = true; }
   }
-  if( oFound ){ return oParent; }
+  if( elementFound ){ return oParent; }
   else { return false; }
 }
 
@@ -135,7 +133,8 @@ var getParentInRoot = function(oElement,oRoot){
   return oElement;
 }
 
-var inArray = function(oArray,oString){
+var inArrayString = function(oArray,oString)
+{
   return oArray.indexOf(oString) > -1;
 }
 
@@ -169,9 +168,6 @@ var getElementsInSelection = function(range, set_root){
   }
   return nodeArray;
 };
-
-
-
 
 var deleteRangeElements = function(oSelection,oRoot)
 {
