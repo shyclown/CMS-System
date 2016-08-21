@@ -1,32 +1,32 @@
-console.log('JS FILE LOADED: _afterLoad.js');
+// console.log('JS FILE LOADED: _afterLoad.js');
 
 window.addEventListener('load',function load(){
   window.removeEventListener("load", load, false); //remove listener, no longer needed
-  applyAfterLoad();
+  runAfterLoad.run();
 },false);
 
-var runAfterLoadList = [];
-
-var runAfterLoad = function(oSomething, oArguments)
+var runAfterLoad =
 {
-  toList =
-  {
-    fn: oSomething, arg: oArguments
-  }
-  runAfterLoadList.push(toList);
-}
+  list : [],
 
-var applyAfterLoad = function()
-{
-  var i = 0;
-  var len = runAfterLoadList.length;
-  while( i < len )
+  add : function(oFunction, oArgumentsInArray)
   {
-    runAfterLoadList[i].fn.apply(this, runAfterLoadList[i].arg);
-    console.log( 'RUN AFTER LOAD: '+ runAfterLoadList[i].fn.name + '()');
-    i++;
+    let toList = {
+      fn: oFunction,
+      arg: oArgumentsInArray
+    };
+    runAfterLoad.list.push(toList);
+  },
+
+  run : function()
+  {
+    var i = 0;
+    var len = runAfterLoad.list.length;
+    while( i < len )
+    {
+      runAfterLoad.list[i].fn.apply(this, runAfterLoad.list[i].arg);
+      console.log( 'RUN AFTER LOAD: '+ runAfterLoad.list[i].fn.name + '()');
+      i++;
+    }
   }
 }
-
-var log = function(oMessage){  console.log(oMessage); }
-runAfterLoad(log,['PAGE LOADED']);

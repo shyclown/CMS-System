@@ -79,6 +79,15 @@ form.el-article input[type='text']{
   clear: both;
 }
 </style>
+<script src="/wysiwyg/txt_area.js"></script>
+<script src="/wysiwyg/calendar.js"></script>
+<script>
+var Editor = function(){
+new txtArea('form_new_article','manipulate');
+new Calendar('publish_date');
+}
+runAfterLoad.add(Editor);
+</script>
 <div class="article_editor page-wrap">
   <header>
     <h2>New Article</h2>
@@ -109,10 +118,3 @@ form.el-article input[type='text']{
 <div class="clr"></div>
   </form>
 </div>
-
-<script src="/wysiwyg/txt_area.js"></script>
-<script src="/wysiwyg/calendar.js"></script>
-<script>
-new txtArea('form_new_article','manipulate');
-new Calendar('publish_date');
-</script>

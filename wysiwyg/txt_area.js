@@ -111,7 +111,7 @@ oKeyEvents()
       deleteRangeElements(oSelection, oRoot);
     }
     // Detect begginning of the element
-    else if( oSelection.focusOffset == 0 )
+    else if( oSelection.focusOffset == 0)
     {
       event.preventDefault();
       //var currentNode = getParentInRoot(oSelection.focusNode, this.content_wrap);
