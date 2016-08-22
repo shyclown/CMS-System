@@ -83,8 +83,9 @@ form.el-article input[type='text']{
 <script src="/wysiwyg/calendar.js"></script>
 <script>
 var Editor = function(){
-new txtArea('form_new_article','manipulate');
+var wysiwyg = new txtArea('form_new_article','manipulate');
 new Calendar('publish_date');
+new dragItem(wysiwyg.content_wrap)
 }
 runAfterLoad.add(Editor);
 </script>
