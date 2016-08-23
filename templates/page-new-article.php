@@ -82,12 +82,12 @@ form.el-article input[type='text']{
 <script src="/wysiwyg/txt_area.js"></script>
 <script src="/wysiwyg/calendar.js"></script>
 <script>
-var Editor = function(){
+var oEditor = function(){
 var wysiwyg = new txtArea('form_new_article','manipulate');
 new Calendar('publish_date');
-new dragItem(wysiwyg.content_wrap)
+new Editor.mouse(wysiwyg.content_wrap);
 }
-runAfterLoad.add(Editor);
+runAfterLoad.add(oEditor);
 </script>
 <div class="article_editor page-wrap">
   <header>
