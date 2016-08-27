@@ -75,6 +75,10 @@ form.el-article input[type='text']{
     padding: 1px;
   background-color: #E0E0E0;
 }
+.el_cont_area img{
+  width: 350px;
+  border: 3px solid #EAEAEA;
+}
 .clr{
   clear: both;
 }

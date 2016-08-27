@@ -28,8 +28,8 @@ Editor.mouse.prototype.getPosition = function(event){
 }
 
 Editor.mouse.prototype.leftClick = function(event){
-  console.log(this.getPosition(event));
-  console.log(this.elementUnderMouse(event).tagName);
+  var x = this.elementUnderMouse(event);
+  console.log(x);
 }
 
 Editor.mouse.prototype.rightClick = function(event){}
@@ -42,7 +42,6 @@ Editor.mouse.prototype.dragEnter = function(event){
   this.removeDefault(event);
   if(!this.isDragging){
     console.log('dragEnter');
-    console.log(this);
     this.dragingItem = this.draging.bind(this);
     this.content_area.addEventListener('mousemove', this.dragingItem ,false);
     this.isDragging = true;
@@ -78,11 +77,17 @@ Editor.mouse.prototype.drop = function(event){
         image : resultUrl
       }
       var uploadProgress = function(percent){ console.log(percent*100); }
-      var callbackAjax = function(response){
-        console.log(response);
-        var res_image = new Image();
-        res_image.src = response;
-        self.content_area.appendChild(res_image);
+      var callbackAjax = function(response)
+      {
+        var figureImage = new Image();
+        figureImage.src = response;
+        var figure = document.createElement('figure');
+        var figureCaption = document.createElement('figcaption');
+        figureCaption.innerHTML = 'hey';
+        figure.className = 'image';
+        figure.appendChild(figureImage);
+        figure.appendChild(figureCaption);
+        self.content_area.appendChild(figure);
       }
       new Editor.ajax('system/run/upload_image.php', oData, uploadProgress, callbackAjax);
     }
@@ -104,7 +109,6 @@ Editor.mouse.prototype.resizeDropped = function(readerEvent, callback, size){
         max_size = 450,
         width = image.width,
         height = image.height;
-        console.dir(image);
     if(width > height){
       if (width > max_size) {
         height *= max_size / width;
@@ -126,5 +130,5 @@ Editor.mouse.prototype.resizeDropped = function(readerEvent, callback, size){
 
 Editor.mouse.prototype.elementUnderMouse = function(event){
   var pos = this.getPosition(event);
-  return document.elementFromPoint( pos.x, pos.y );
+  return document.elementFromPoint( pos.x - window.pageXOffset, pos.y - window.pageYOffset);
 }
