@@ -13,9 +13,12 @@ class Articles
     $this->errors = [];
     // create tables
     $this->create_table_el_articles();
+    $this->create_table_el_user_article();
   }
-
-  public function create_table_el_articles()
+  //-----------------------------------------------------
+  // Create Tables
+  //-----------------------------------------------------
+  private function create_table_el_articles()
   {
     $sql = "CREATE TABLE IF NOT EXISTS `el_articles` (
             `id` int(8) NOT NULL AUTO_INCREMENT,
@@ -25,6 +28,16 @@ class Articles
             `date_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
             `date_edited` datetime NOT NULL,
             PRIMARY KEY (`id`)
+          ) ENGINE=InnoDB
+          DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
+    $this->db->query($sql);
+  }
+  private function create_table_el_user_article()
+  {
+    $sql = "CREATE TABLE IF NOT EXISTS `el_user_article` (
+            `user_id` int(8) NOT NULL,
+            `article_id` int(8) NOT NULL,
+            PRIMARY KEY (`user_id`)
           ) ENGINE=InnoDB
           DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
     $this->db->query($sql);
