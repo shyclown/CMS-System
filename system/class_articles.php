@@ -64,14 +64,14 @@ class Articles
             WHERE ua.user_id = ?
             LIMIT ? , ?";
     $params = array( 'i', $this->user_id, $limit_min, $limit_max );
-    $this->db->query($sql,$params);
+    return $this->db->query($sql,$params);
   }
 
   public function select_article_by_id($article_id)
   {
     $sql = "SELECT * FROM el_articles WHERE id = ?";
     $params = array( 'i', $article_id );
-    $this->db->query($sql,$params);
+    return $this->db->query($sql,$params);
   }
 
   public function select_public_articles($limit_min = 0, $limit_max = 30)
@@ -79,7 +79,7 @@ class Articles
     // state 3 will mean public
     $sql = "SELECT * FROM el_articles WHERE state = 3 LIMIT ?,? ";
     $params = array( 'ii', $limit_min, $limit_max );
-    $this->db->query($sql,$params);
+    return $this->db->query($sql,$params);
   }
   //-----------------------------------------------------
   // Create Article
@@ -90,7 +90,7 @@ class Articles
     $sql = "INSERT INTO `el_articles` (`id`, `header`, `content`, `state`, `date_created`, `date_edited`)
             VALUES (NULL, ?, ?, '0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
     $params = array( 'ss', $data->header, $data->content );
-    $this->db->query($sql,$params);
+    return $this->db->query($sql,$params);
   }
 
   //-----------------------------------------------------
@@ -101,7 +101,7 @@ class Articles
   {
     $sql = "UPDATE `el_articles` SET `content` = ? WHERE `el_articles`.`id` = ?";
     $params = array('si', $data->content, $data->article_id);
-    $this->db->query($sql,$params);
+    return $this->db->query($sql,$params);
   }
 
   //-----------------------------------------------------
@@ -112,7 +112,7 @@ class Articles
   {
     $sql = "DELETE FROM `el_articles` WHERE `el_articles`.`id` = ?";
     $params = array('i', $data->article_id);
-    $this->db->query($sql,$params);
+    return $this->db->query($sql,$params);
   }
 }
  ?>

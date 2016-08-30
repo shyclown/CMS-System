@@ -57,10 +57,19 @@ class Account
     $this->password = $this->generate_hash($_POST['user_pass']);
     $this->salt = $_POST['user_pass']; // just for testing
   }
-
-  public function create_new_account()
-  {
+  public function create_new_account(){
     $this->load_post_values();
+    return $this->make_account();
+  }
+  public function create_test_account($username,$email,$password){
+    $this->username = $username;
+    $this->email = $email;
+    $this->password = $this->generate_hash($password);
+    $this->salt = $password; // just for testing
+    return $this->make_account();
+  }
+  public function make_account()
+  {
     $this->check_values();
     if(empty($this->errors)){
       $user_id = $this->create_account();
@@ -86,13 +95,29 @@ class Account
 
   }
 
-  public function login_account()
+  private function login_post_data(){
+    if(isset($_POST)
+    && isset($_POST['user_login'])
+    && isset($_POST['user_pass']))
+    {
+      $this->logname = $_POST['user_login'];
+      $this->password = $_POST['user_pass'];
+      return true;
+    }
+    else{ return false; }
+  }
+  public function login_account($test_user, $test_pass)
   {
-    $this->logname = $_POST['user_login'];
-    $this->password = $_POST['user_pass'];
+    if( !$this->login_post_data()
+    && isset($test_user)
+    && isset($test_pass) )
+    {
+      $this->logname = $test_user;
+      $this->password = $test_pass;
+    }
     if($this->find_account()){
       $this->make_session();
-      if($_POST['remember_me']){
+      if(isset($_POST['remember_me'])){
         $this->make_cookie();
       }
     }
@@ -123,8 +148,8 @@ class Account
 
   public function is_free($column)
   {
-    if($column == 'email'){ $value = $this->email; }
-    if($column == 'username'){ $value = $this->username; }
+    if($column == 'user_email'){ $value = $this->email; }
+    if($column == 'user_login'){ $value = $this->username; }
     $sql = "SELECT * FROM `users` WHERE ? = ?";
     $params = array('ss', $column, $value);
     $result = $this->db->query($sql, $params);
@@ -155,16 +180,16 @@ class Account
   {
     if(!isset($this->email) || $this->email == ''){
       array_push($this->errors,'email not set');}
-    if(!$this->is_valid('email')){
+    if(!$this->is_valid('user_email')){
       array_push($this->errors,'email writen wrong');}
-    if(!$this->is_free('email')){
+    if(!$this->is_free('user_email')){
       array_push($this->errors,'email already used by someone else');}
 
     if(!isset($this->username) || $this->username == ''){
       array_push($this->errors,'username not set');}
-    if(!$this->is_valid('username')){
+    if(!$this->is_valid('user_login')){
       array_push($this->errors,'username is not valid');}
-    if(!$this->is_free('username')){
+    if(!$this->is_free('user_login')){
       array_push($this->errors,'username already used by someone else');}
   }
 
