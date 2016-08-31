@@ -33,7 +33,7 @@ class Database{
     $result = $this->_mysqli->query($sql_string);
     if($result){
       $_array = array();
-      while($row = $result->fetch_array(MYSQL_ASSOC))
+      while($row = $result->fetch_array(MYSQLI_ASSOC))
         { $_array[] = $row; }
       return $_array;
     }
@@ -55,7 +55,7 @@ class Database{
         if($result = $stmt->get_result())
         {
           $_array = array();
-          while($row = $result->fetch_array(MYSQL_ASSOC))
+          while($row = $result->fetch_array(MYSQLI_ASSOC))
           {
             $_array[]= $row;
           }
