@@ -39,8 +39,9 @@ class Database{
     }
   }
 
-  public function query($sql_string = null, $values = null, $returning = 'array'){
-
+  public function query($sql_string = null, $values = null, $returning = 'array')
+  {
+    $return_value = false;
     if($stmt = $this->_mysqli->prepare($sql_string)){
 
       if($values){
@@ -52,31 +53,30 @@ class Database{
       }
       if($stmt->execute())
       {
-        if($result = $stmt->get_result())
-        {
+        if($result = $stmt->get_result()){
           $_array = array();
-          while($row = $result->fetch_array(MYSQLI_ASSOC))
-          {
+          while($row = $result->fetch_array(MYSQLI_ASSOC)){
             $_array[]= $row;
           }
-          if($returning == 'array')
-          {
-            return $_array;
+          if($returning == 'array'){
+            $return_value = $_array;
           }
         }
         else {
           if($returning == 'get_id'){
-            return $stmt->insert_id;
-          }
-          else{
-            return true;
+            $return_value = $stmt->insert_id;
+          }else{
+            $return_value = true;
           }
         }
-      }
-      else{
-        return false; }
+      } else { var_dump($this->_mysqli->error); }
       $stmt->close();
     }
+    else
+    {
+      var_dump($this->_mysqli->error);
+    }
+    return $return_value;
   } // end of query
 
   private function refValues($arr){

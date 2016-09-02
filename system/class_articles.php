@@ -7,6 +7,14 @@ class Articles
   private $db;
   public $errors;
 
+  public $id;
+  public $user_id;
+  public $header;
+  public $content;
+  public $date_created;
+  public $date_edited;
+  public $state;
+
   function __construct()
   {
     $this->db = new Database;
@@ -67,11 +75,18 @@ class Articles
     return $this->db->query($sql,$params);
   }
 
-  public function select_article_by_id($article_id)
+  public function select_by_id($article_id)
   {
-    $sql = "SELECT * FROM el_articles WHERE id = ?";
-    $params = array( 'i', $article_id );
-    return $this->db->query($sql,$params);
+    $sql = "SELECT user_id, header, content, date_created, date_edited, state
+            FROM el_user_article ua
+            INNER JOIN el_articles a ON ua.article_id = a.id
+            WHERE ua.user_id = ? AND a.id = ?
+            LIMIT 1";
+    //$sql = "SELECT * FROM el_articles WHERE id = ?";
+    $params = array( 'ii', $_SESSION['user_id'], $article_id );
+    $result = $this->db->query($sql,$params);
+    $this->load_data($result[0]);
+    return $result[0];
   }
 
   public function select_public_articles($limit_min = 0, $limit_max = 30)
@@ -81,15 +96,44 @@ class Articles
     $params = array( 'ii', $limit_min, $limit_max );
     return $this->db->query($sql,$params);
   }
+
+  private function load_data($data)
+  {
+    $this->user_id = $data['user_id'];
+    $this->header = $data['header'];
+    $this->content = $data['content'];
+    $this->date_created = $data['date_created'];
+    $this->date_edited = $data['date_edited'];
+    $this->state = $data['state'];
+  }
   //-----------------------------------------------------
   // Create Article
   //-----------------------------------------------------
 
-  public function insert_article($data)
+  public function create_new()
+  {
+    if($new_article_id = $this->insert_draft()){
+      $this->insert_user_article($new_article_id);
+      $this->id = $new_article_id;
+      $this->select_by_id($new_article_id);
+      return $new_article_id;
+    }
+    return false;
+  }
+
+  private function insert_draft()
   {
     $sql = "INSERT INTO `el_articles` (`id`, `header`, `content`, `state`, `date_created`, `date_edited`)
             VALUES (NULL, ?, ?, '0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
-    $params = array( 'ss', $data->header, $data->content );
+    $params = array( 'ss', '', '' );
+    // returns ID of inserted draft
+    return $this->db->query($sql, $params , 'get_id');
+  }
+  private function insert_user_article($id)
+  {
+    $sql = "INSERT INTO  `cms`.`el_user_article` (`user_id` ,`article_id`)VALUES (?,  ?)";
+    $params = array( 'ii', $_SESSION['user_id'], $id );
+    // returns ID of inserted draft
     return $this->db->query($sql,$params);
   }
 
