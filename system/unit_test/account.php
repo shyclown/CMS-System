@@ -22,6 +22,7 @@ require_once('../class_account.php');
 require_once('../class_session.php');
 require_once('../class_mysqli.php');
 // create account
+
 $test = new stdClass();
 $test->username = generateRandomString(16);
 $test->email =  generateRandomString(16).'@'. generateRandomString(16).'.php';
@@ -30,20 +31,42 @@ $test->password =  generateRandomString(18);
 $_POST['user_name'] = $test->username;
 $_POST['user_email'] = $test->email;
 $_POST['user_pass'] = $test->password;
-
 $_POST['user_login'] = $test->username;
+function br(){ echo '<br/>';}
+
 new Session;
 $account = new Account;
 
-$account->create_new_account();
-$login_user = $account->login_account();
-var_dump($_SESSION);
-
-$account->change_nice_name('new nicer name');
-$test->nw_password = generateRandomString(18);
-if($account->change_password($_POST['user_pass'],'new_password_changed'));
-$account->change_email('new@email.com');
-
+if($account->create_new()){
+  echo 'New account: id-'. $account->user_id;
+  br();
+}
+if($account->login()){
+  echo 'Loged in: id-'.$_SESSION['user_id'];
+  br();
+}
+if($account->change_nicename('newNiceName')){
+  echo 'Nicename changed';
+  br();
+}
+$new_email = generateRandomString(8).'@'.generateRandomString(8).'.com';
+if($account->change_email($new_email)){
+  echo 'Email changed';
+  br();
+}
+$new_pass = generateRandomString(12);
+if($account->change_password($new_pass, $test->password)){
+  echo 'Password changed';
+  br();
+}
+if($account->delete()){
+  echo 'Account deleted';
+  br();
+}
+if($account->logout()){
+  echo 'Logged out';
+  br();
+}
 
 
 

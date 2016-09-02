@@ -1,19 +1,19 @@
 <?php
 class Account
 {
-  public $id;
+  public $user_id;
   public $username;
   public $nicename;
   public $email;
 
-  public $user_id;
+
   public $user_folder;
 
   // logname is either username or email
   private $logname;
   private $password;
 
-  private $errors;
+  public $errors;
   private $db;
 
   function __construct()
@@ -22,8 +22,20 @@ class Account
     $this->create_table_if_not_exist();
     $this->errors = array();
 
+    if(isset($_SESSION['user_id'])){ $this->load_signed(); }
+    else if(isset($_COOKIE['elephant-id'])){
+      if($this->is_valid_cookie()){ $this->load_signed();  }
+    }
+    else{
+      header('login.php');
+    }
+
+
   }
 
+  private function add_error($string){
+    array_push($this->errors, $string);
+  }
   private function create_table_if_not_exist()
   {
     $sql_create =    'CREATE TABLE IF NOT EXISTS `el_users` (
@@ -40,121 +52,84 @@ class Account
   }
   private function set_user_folder()
   {
-    $path = $_SERVER["DOCUMENT_ROOT"].'/files/'.$this->id;
+    $path = $_SERVER["DOCUMENT_ROOT"].'/files/'.$this->user_id;
     if (!file_exists($path)){ mkdir($path, 0777, true); }
     return $path;
   }
 
   public function load_signed()
   {
-    if(isset($_SESSION['user_id'])){
       $id = $_SESSION['user_id'];
       $sql = "SELECT * FROM `el_users` WHERE `id` = ? LIMIT 1";
       $params = array("i",$id);
       $result = $this->db->query($sql,$params);
-      if(!empty($result)){
-        $this->id = $result[0]['id'];
+      if(!empty($result))
+      {
+        $this->user_id = $result[0]['id'];
         $this->username = $result[0]['user_name'];
         $this->email = $result[0]['user_email'];
-        }
-    }
+      }
   }
-  public function get_name(){ echo $this->username; }
-  public function get_email(){ echo $this->email; }
-  public function get_id(){ echo $this->id; }
 
-  private function load_post_values()
+  public function create_new()
   {
     $this->username = $_POST['user_name'];
     $this->email = $_POST['user_email'];
     $this->password = $this->generate_hash($_POST['user_pass']);
     $this->salt = $_POST['user_pass']; // just for testing
-  }
-  public function create_new_account(){
-    $this->load_post_values();
-    var_dump($this->username);
-    var_dump($this->email);
-    return $this->make_account();
-  }
 
-  public function make_account()
-  {
-    $this->check_values();
-    var_dump($this->errors);
+    $this->check_email($this->email);
+    $this->check_username($this->username);
     if(empty($this->errors))
     {
-      $this->id = $this->insert_account();
+      $this->user_id = $this->insert_account();
       $this->set_user_folder();
       return true;
     }
-    else{ var_dump($this->errors); }
+    else{ return false; }
   }
 
-  public function delete_current_account()
+  public function delete()
   {
     $this->user_id = $_SESSION['user_id'];
-    $sql = "INSERT INTO `el_users` (`id`, `user_login`, `user_pass`, `user_email`, `salt`) VALUES (NULL, ?, ?, ?, ?);";
-    $params = array('ssss', $this->username , $this->password , $this->email, $this->salt);
-    $result = $db->query($sql, $params);
-
+    $sql = "DELETE FROM `cms`.`el_users` WHERE `el_users`.`id` = ?";
+    $params = array('i', $this->user_id);
+    return $this->db->query($sql, $params);
   }
 
-  private function login_post_data(){
-      $this->logname = $_POST['user_login'];
-      $this->password = $_POST['user_pass'];
-  }
-
-  public function login_account()
+  public function login()
   {
-    $this->login_post_data();
+    if(!$_POST
+    && !isset($_POST['user_login'])
+    && !isset($_POST['user_pass'])){
+      $this->add_error('Function:'.__FUNCTION__.' -> Correct POST data is missing. Login requires log name and password to be sent.');
+      return false;
+    }else{
+    $this->logname  = $_POST['user_login'];
+    $this->password = $_POST['user_pass'];
+    }
     if($this->find_account()){
       $this->make_session();
       if(isset($_POST['remember_me'])){ $this->make_cookie(); }
-      echo 'logged in';
       return true;
     }
     else{
-      echo 'not logged in';
       return false;
     }
   }
 
-  public function check_email(){
-    if(isset($_POST) && $_POST != ''){
-      $this->email = $_POST['email'];
-      if($this->is_valid('user_email')){
-        if($this->is_free('user_email')){
-          echo 'email is ok';
-        }
-        else{ echo 'email is not free'; }
-      }
-      else{
-        echo 'not valid email';
-      }
-    }
+  public function is_valid($column, $value)
+  {
+    if($column == 'user_email'){return filter_var(  $value, FILTER_VALIDATE_EMAIL);}
+    if($column == 'user_name'){return preg_match('/^[A-Za-z][A-Za-z\d_.-]{5,31}$/i', $value);}
   }
 
-  public function is_valid($column)
+  public function is_free($column, $value)
   {
-    if($column == 'user_email'){return filter_var(  $this->email, FILTER_VALIDATE_EMAIL);}
-    if($column == 'user_name'){return preg_match('/^[A-Za-z][A-Za-z\d_.-]{5,31}$/i', $this->username);}
-  }
-
-  public function is_free($column)
-  {
-    if($column == 'user_email'){ $value = $this->email; }
-    if($column == 'user_name'){ $value = $this->username; }
     $sql = "SELECT * FROM `el_users` WHERE ? = ?";
     $params = array('ss', $column, $value);
     $result = $this->db->query($sql, $params);
     return empty($result);
-  }
-
-  public function list_all()
-  {
-    $sql = "SELECT * FROM `el_users`";
-    $result = $this->db->select($sql);
-    return $result;
   }
 
   private function valid_password($input, $hashed)
@@ -170,21 +145,26 @@ class Account
     return crypt($password,$param);
   }
 
-  private function check_values()
+  private function check_email($email)
   {
-    if(!isset($this->email) || $this->email == ''){
-      array_push($this->errors,'email not set');}
-    if(!$this->is_valid('user_email')){
-      array_push($this->errors,'email writen wrong');}
-    if(!$this->is_free('user_email')){
-      array_push($this->errors,'email already used by someone else');}
+    if(!isset($email) || $email == ''){
+      $this->add_error('email not set');}
+    if(!$this->is_valid('user_email', $email)){
+      $this->add_error('email writen wrong');}
+    if(!$this->is_free('user_email', $email)){
+      $this->add_error('email already used by someone else');}
+    return empty($this->errors);
+  }
 
-    if(!isset($this->username) || $this->username == ''){
-      array_push($this->errors,'username not set');}
-    if(!$this->is_valid('user_name')){
-      array_push($this->errors,'username is not valid');}
-    if(!$this->is_free('user_name')){
-      array_push($this->errors,'username already used by someone else');}
+  private function check_username($username)
+  {
+    if(!isset($username) || $username == ''){
+      $this->add_error('username not set');}
+    if(!$this->is_valid('user_name', $username)){
+      $this->add_error('username is not valid');}
+    if(!$this->is_free('user_name', $username)){
+      $this->add_error('username already used by someone else');}
+    return empty($this->errors);
   }
 
   private function insert_account()
@@ -195,46 +175,62 @@ class Account
   }
 
   // UPDATES
-  public function change_email($new_email){
-    $sql = "UPDATE `el_users` SET `user_email` = ? WHERE `el_users`.`id` = ?";
-    $params = array('ss', $new_email, $_SESSION['user_id']);
-    return $this->db->query($sql, $params);
-  }
-  public function change_nice_name($new_nice_name){/*
-    $sql = "UPDATE `el_users` SET `user_name` = ? WHERE `el_users`.`id` = ?";
-    $params = array('ss', $new_email, $_SESSION['user_id']);
-    return $this->db->query($sql, $params);*/
-  }
-  public function log_out(){
-    session_destroy();
-    header("");
-  }
-  public function change_password($new_pass, $old_pass)
+  public function change_email($new_email)
   {
-    if($this->check_password($old_pass)){
-      // replace old password
+    if(!$this->check_email( $new_email )){ return false; }
+    else
+    {
+      $sql = "UPDATE `el_users` SET `user_email` = ? WHERE `el_users`.`id` = ?";
+      $params = array('si', $new_email, $_SESSION['user_id']);
+      if($this->db->query($sql, $params)){
+        $this->email = $new_email;
+        return true;
+      }
+      $this->add_error('change_email query failed');
+      return false;
     }
-    /*
-    $sql = "UPDATE `el_users` SET `user_pass` = ? WHERE `el_users`.`id` = ? AND `el_users`.`user_pass` = ?";
-    $params = array('ss', $new_pass, $_SESSION['user_id'], );
-    return $this->db->query($sql, $params);
-*/
+  }
+  public function change_nicename($new_nicename){
+    $sql = "UPDATE `el_users` SET `user_nicename` = ? WHERE `el_users`.`id` = ?";
+    $params = array('si', $new_nicename, $_SESSION['user_id']);
+    if($this->db->query($sql, $params)){
+      $this->nicename = $new_nicename;
+      return true;
+    }
+    $this->add_error('change_nicename query failed');
+    return false;
   }
 
+  public function logout()
+  {
+    if(session_destroy())
+    {
+      unset($_SESSION);
+      return true;
+    }
+    return false;
+    //header("");
+  }
+
+  public function change_password($new_pass, $old_pass)
+  {
+    if($this->check_password($old_pass))
+    {
+      // send email
+      //$this->send_email('Header','Content');
+      // replace old password
+      $sql = "UPDATE `el_users` SET `user_pass` = ? WHERE `el_users`.`id` = ?";
+      $params = array('ss', $new_pass, $_SESSION['user_id'], );
+      return $this->db->query($sql, $params);
+    }
+
+  }
   private function check_password($password)
   {
     $sql = "SELECT `user_pass` FROM `el_users` WHERE `id` = ? LIMIT 1";
     $params = array("i", $_SESSION['user_id']);
     $result = $this->db->query($sql,$params);
     return $this->valid_password($password, $result[0]['user_pass']);
-  }
-  private function check_email_is_free($email)
-  {
-    // check if is valid email
-    $sql = "SELECT `user_email` FROM `el_users` WHERE `user_email` = ? LIMIT 1";
-    $params = array("s", $email);
-    $result = $this->db->query($sql,$params);
-    return (!empty($result));
   }
 
   private function find_account()
@@ -246,7 +242,7 @@ class Account
     {
       if($this->valid_password($this->password, $result[0]['user_pass']))
       {
-        $this->id = $result[0]['id'];
+        $this->user_id = $result[0]['id'];
         $this->username = $result[0]['user_name'];
         $this->email = $result[0]['user_email'];
         return true;
@@ -267,10 +263,8 @@ class Account
   }
   private function make_session()
   {
-    $_SESSION["user_id"] = $this->id;
+    $_SESSION["user_id"] = $this->user_id;
     $_SESSION["user_name"] = $this->username;
-    $_SESSION["loged_in"] = true;
-    var_dump($_SESSION);
   }
 
   public function is_valid_cookie()
