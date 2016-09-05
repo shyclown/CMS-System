@@ -14,6 +14,10 @@ $article->create_new();
 var_dump($article);
 
 
+$article->load($data);
+$article->save();
+
+
 
 
 

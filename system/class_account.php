@@ -24,13 +24,9 @@ class Account
 
     if(isset($_SESSION['user_id'])){ $this->load_signed(); }
     else if(isset($_COOKIE['elephant-id'])){
-      if($this->is_valid_cookie()){ $this->load_signed();  }
+      if($this->is_valid_cookie()){ $this->load_signed();
+      }
     }
-    else{
-      header('login.php');
-    }
-
-
   }
 
   private function add_error($string){
@@ -68,6 +64,7 @@ class Account
         $this->user_id = $result[0]['id'];
         $this->username = $result[0]['user_name'];
         $this->email = $result[0]['user_email'];
+        $this->nicename = $result[0]['user_nicename'];
       }
   }
 
@@ -205,7 +202,13 @@ class Account
   {
     if(session_destroy())
     {
+      echo 'destroyed';
       unset($_SESSION);
+      if(isset($_COOKIE['elephant-id']))
+      {
+        unset($_COOKIE['elephant-id']);
+        setcookie('elephant-id',null,-1,'/');
+      }
       return true;
     }
     return false;
@@ -245,6 +248,7 @@ class Account
         $this->user_id = $result[0]['id'];
         $this->username = $result[0]['user_name'];
         $this->email = $result[0]['user_email'];
+        $this->nicename = $result[0]['user_nicename'];
         return true;
       }
       else
