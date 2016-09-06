@@ -66,11 +66,9 @@ class FileManager
   public function is_logged_in()
   {
     if(isset($_SESSION)){
-      if(isset($_SESSION['loged_in']) && $_SESSION['user_id']){
-        if($_SESSION['loged_in']){
+      if($_SESSION['user_id']){
           $this->user_id = $_SESSION['user_id'];
           return true;
-        }
       }
     }
     $this->errors[] = 'User is not logged in.';

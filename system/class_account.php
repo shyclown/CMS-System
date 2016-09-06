@@ -83,7 +83,10 @@ class Account
       $this->set_user_folder();
       return true;
     }
-    else{ return false; }
+    else{
+      var_dump($this->errors);
+      return false;
+    }
   }
 
   public function delete()
@@ -121,10 +124,17 @@ class Account
     if($column == 'user_name'){return preg_match('/^[A-Za-z][A-Za-z\d_.-]{5,31}$/i', $value);}
   }
 
-  public function is_free($column, $value)
+  public function is_free_email($value)
   {
-    $sql = "SELECT * FROM `el_users` WHERE ? = ?";
-    $params = array('ss', $column, $value);
+    $sql = "SELECT * FROM `el_users` WHERE `user_email` = ?";
+    $params = array('s', $value);
+    $result = $this->db->query($sql, $params);
+    return empty($result);
+  }
+  public function is_free_username($value)
+  {
+    $sql = "SELECT * FROM `el_users` WHERE `user_name` = ?";
+    $params = array('s', $value);
     $result = $this->db->query($sql, $params);
     return empty($result);
   }
@@ -148,7 +158,7 @@ class Account
       $this->add_error('email not set');}
     if(!$this->is_valid('user_email', $email)){
       $this->add_error('email writen wrong');}
-    if(!$this->is_free('user_email', $email)){
+    if(!$this->is_free_email($email)){
       $this->add_error('email already used by someone else');}
     return empty($this->errors);
   }
@@ -159,7 +169,7 @@ class Account
       $this->add_error('username not set');}
     if(!$this->is_valid('user_name', $username)){
       $this->add_error('username is not valid');}
-    if(!$this->is_free('user_name', $username)){
+    if(!$this->is_free_username($username)){
       $this->add_error('username already used by someone else');}
     return empty($this->errors);
   }

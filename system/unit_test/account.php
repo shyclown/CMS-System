@@ -58,11 +58,11 @@ $new_pass = generateRandomString(12);
 if($account->change_password($new_pass, $test->password)){
   echo 'Password changed';
   br();
-}
+}/*
 if($account->delete()){
   echo 'Account deleted';
   br();
-}
+}*/
 if($account->logout()){
   echo 'Logged out';
   br();

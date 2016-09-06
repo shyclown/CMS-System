@@ -53,7 +53,8 @@ class Database{
       }
       if($stmt->execute())
       {
-        if($result = $stmt->get_result()){
+        if($result = $stmt->get_result())
+        {
           $_array = array();
           while($row = $result->fetch_array(MYSQLI_ASSOC)){
             $_array[]= $row;
@@ -69,7 +70,9 @@ class Database{
             $return_value = true;
           }
         }
-      } else { var_dump($this->_mysqli->error); }
+      } else {
+        var_dump($this->_mysqli->error);
+      }
       $stmt->close();
     }
     else
