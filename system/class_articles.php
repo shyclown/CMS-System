@@ -67,11 +67,11 @@ class Articles
   public function select_articles_of_user($limit_min = 0, $limit_max = 30)
   {
     $sql = "SELECT *
-            FROM user_articles ua
+            FROM el_user_article ua
             INNER JOIN el_articles a ON ua.article_id = a.id
             WHERE ua.user_id = ?
             LIMIT ? , ?";
-    $params = array( 'i', $this->user_id, $limit_min, $limit_max );
+    $params = array( 'iii', $this->user_id, $limit_min, $limit_max );
     return $this->db->query($sql,$params);
   }
 

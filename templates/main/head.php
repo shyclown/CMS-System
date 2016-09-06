@@ -19,8 +19,10 @@ foreach (glob("js/fn/*.js") as $filename){ echo '<script src="'.$filename.'"></s
 <!-- Angular JS -->
 <script src="/js/angular/angular.min.js"></script>
 <script src="/js/angular/angular-sanitize.min.js"></script>
-<script src="/js/ng_controllers/myapp.js"></script>
-
+<script src="/js/app/main_app.js"></script>
+<?php
+foreach (glob("js/ng_controllers/*.js") as $filename){ echo '<script src="'.$filename.'"></script>';}
+?>
 <?php
 foreach (glob("js/ng/*.js") as $filename){ echo '<script src="'.$filename.'" ></script>';}
 ?>

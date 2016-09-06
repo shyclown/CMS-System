@@ -1,5 +1,3 @@
-var ngApp = angular.module("page",['ngSanitize']);
-
 ngApp.controller('cms', function($scope, $http){
  $scope.leftPanelExpanded = true;
  $scope.userPanelExpanded = false;

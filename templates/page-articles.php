@@ -80,11 +80,12 @@ button.new-btn:hover{
 <button class="article-list gray-btn"><i class="fa fa-th-list fa-fw"></i></button>
 <button class="article-list gray-btn"><i class="fa fa-th fa-fw"></i></button>
 
-<div class="content">
+<div ng-controller="articles" class="content">
   <!-- Loop Trough Articles -->
-  <div class="article-line">
-    <div class="number">1</div>
-    <div class="article-name">ArticleName</div>
+  <div class="article-line" ng-repeat="article in articles">
+
+    <div class="number">  {{article.id}}</div>
+    <div class="article-name">{{article.header}}</div>
     <div class="line-btns">Button</div>
   </div>
 </div>
