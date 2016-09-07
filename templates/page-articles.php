@@ -84,7 +84,7 @@ button.new-btn:hover{
   <!-- Loop Trough Articles -->
   <div class="article-line" ng-repeat="article in articles">
 
-    <div class="number">  {{article.id}}</div>
+    <div class="number">  {{article.article_id}}</div>
     <div class="article-name">{{article.header}}</div>
     <div class="line-btns">Button</div>
   </div>
