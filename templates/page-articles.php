@@ -86,7 +86,7 @@ button.new-btn:hover{
 
     <div class="number">  {{article.article_id}}</div>
     <div class="article-name">{{article.header}}</div>
-    <div class="line-btns">Button</div>
+    <div class="line-btns" ng-click="delete_article()">Delete</div>
   </div>
 </div>
 </div>

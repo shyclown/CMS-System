@@ -15,7 +15,7 @@ var_dump($article);
 
 
 $article->load($data);
-$article->save();
+//$article->save();
 
 
 

@@ -77,7 +77,7 @@ class Articles
 
   public function select_by_id($article_id)
   {
-    $sql = "SELECT user_id, header, content, date_created, date_edited, state
+    $sql = "SELECT article_id, user_id, header, content, date_created, date_edited, state
             FROM el_user_article ua
             INNER JOIN el_articles a ON ua.article_id = a.id
             WHERE ua.user_id = ? AND a.id = ?
@@ -99,6 +99,7 @@ class Articles
 
   private function load_data($data)
   {
+    $this->article_id = $data['article_id'];
     $this->user_id = $data['user_id'];
     $this->header = $data['header'];
     $this->content = $data['content'];
@@ -152,7 +153,7 @@ class Articles
   // Delete Article
   //-----------------------------------------------------
 
-  public function delete_article()
+  public function delete()
   {
     $sql = "DELETE FROM `el_articles` WHERE `el_articles`.`id` = ?";
     $params = array('i', $data->article_id);

@@ -9,11 +9,11 @@ ngApp.controller('articles', function($scope, $http){
 
   function load_many(page, per_page){
     var data = {
+      'action': 'load',
       'page' : $scope.page,
       'per_page' : $scope.per_page
     };
     var success = function(response){
-      console.log(response.data);
       $scope.articles = response.data;
 
     };
@@ -21,6 +21,13 @@ ngApp.controller('articles', function($scope, $http){
   $http.post(targetPHP,data).then(success,error);
   }
   load_many();
+
+  $scope.delete_article = function(id){
+    var data = {'action':'delete','article_id':id }
+    var success = function(response){ console.log('deleted'+id);}
+    var error = function(response){ console.log('error: delete_article');}
+    $http.post(targetPHP,data).then(success,error);
+  }
 
 
 });
