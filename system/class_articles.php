@@ -126,7 +126,7 @@ class Articles
   {
     $sql = "INSERT INTO `el_articles` (`id`, `header`, `content`, `state`, `date_created`, `date_edited`)
             VALUES (NULL, ?, ?, '0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
-    $params = array( 'ss', '', '' );
+    $params = array( 'ss', 'new Article', '' );
     // returns ID of inserted draft
     return $this->db->query($sql, $params , 'get_id');
   }
@@ -156,8 +156,13 @@ class Articles
   public function delete()
   {
     $sql = "DELETE FROM `el_articles` WHERE `el_articles`.`id` = ?";
-    $params = array('i', $data->article_id);
-    return $this->db->query($sql,$params);
+    $params = array('i', $this->article_id);
+    if($this->db->query($sql,$params))
+    {
+      $sql = "DELETE FROM `el_user_article` WHERE `user_id` = ? AND `article_id` = ?";
+      $params = array('ii', $_SESSION['user_id'], $this->article_id);
+      return $this->db->query($sql,$params);
+    }
   }
 }
  ?>

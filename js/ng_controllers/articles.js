@@ -1,6 +1,7 @@
 ngApp.controller('articles', function($scope, $http){
 
   var targetPHP = '/system/ng/articles.php';
+  $scope.info = 'info';
 
   $scope.articles = [];
   $scope.page = 0;
@@ -24,9 +25,18 @@ ngApp.controller('articles', function($scope, $http){
 
   $scope.delete_article = function(id){
     var data = {'action':'delete','article_id':id }
-    var success = function(response){ console.log('deleted'+id);}
+    var success = function(response){ $scope.info = response.data; load_many();}
     var error = function(response){ console.log('error: delete_article');}
     $http.post(targetPHP,data).then(success,error);
+
+  }
+
+  $scope.create_article = function(){
+    var data = {'action':'create_new' }
+    var success = function(response){ $scope.info = response.data; load_many();}
+    var error = function(response){ console.log('error: delete_article');}
+    $http.post(targetPHP,data).then(success,error);
+
   }
 
 

@@ -17,12 +17,18 @@ if($ng_data['action'] == 'load')
   $result = $articles->select_articles_of_user($limit_min,$limit_max);
   echo json_encode($result);
 }
+
 if($ng_data['action'] == 'delete')
 {
-  echo $ng_data['action'];
   $article_id = $ng_data['article_id'];
-  $article->select_by_id($article_id);
+  $articles->select_by_id($article_id);
   $result = $articles->delete();
-  echo $result;
+  //echo $result;
+}
+
+if($ng_data['action'] == 'create_new')
+{
+  $result = $articles->create_new();
+  //echo $result;
 }
 ?>

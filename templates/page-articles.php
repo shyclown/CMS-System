@@ -71,22 +71,23 @@ button.new-btn:hover{
     padding: 8px 16px;
   }
 </style>
-<div class="page-wrap">
+<div class="page-wrap" ng-controller="articles">
 <header>
 <h2>Articles</h2>
 <p>here are all created articles</p>
 </header>
-<button class="article-list new-btn"><i class="fa fa-plus fa-fw"></i>Create new</button>
+<button class="article-list new-btn" ng-click="create_article()"><i class="fa fa-plus fa-fw"></i>Create new</button>
 <button class="article-list gray-btn"><i class="fa fa-th-list fa-fw"></i></button>
 <button class="article-list gray-btn"><i class="fa fa-th fa-fw"></i></button>
 
-<div ng-controller="articles" class="content">
+<div class="content">
+  <div ng-bind-html="info"></div>
   <!-- Loop Trough Articles -->
   <div class="article-line" ng-repeat="article in articles">
 
     <div class="number">  {{article.article_id}}</div>
     <div class="article-name">{{article.header}}</div>
-    <div class="line-btns" ng-click="delete_article()">Delete</div>
+    <div class="line-btns" ng-click="delete_article(article.article_id)">Delete</div>
   </div>
 </div>
 </div>
